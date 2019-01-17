@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:orientation="vertical"
+            android:paddingTop="20dp">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="登记账号"
+                        android:textColor="@color/text_gray"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <EditText
+                        android:id="@+id/checkin_device_account"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:hint="请输入账号"
+                        android:maxLength="12"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="27dp"
+                        android:paddingRight="0dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <ImageView
+                        android:id="@+id/checkin_device_account_clear"
+                        android:layout_width="23dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="-30dp"
+                        android:src="@drawable/bg_clear"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/view_background" />
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="登记密码"
+                        android:textColor="@color/text_gray"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <EditText
+                        android:id="@+id/checkin_device_pwd"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:hint="请输入密码"
+                        android:maxLength="12"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="27dp"
+                        android:paddingRight="0dp"
+                        android:paddingTop="10dp"
+                        android:password="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <ImageView
+                        android:id="@+id/checkin_device_pwd_clear"
+                        android:layout_width="23dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="-63dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/bg_clear"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/checkin_device_pwd_expressly"
+                        android:layout_width="23dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/cipher_text" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/view_background" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="设备编号"
+                        android:textColor="@color/text_gray"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <EditText
+                        android:id="@+id/checkin_device_equipment_number"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:hint="请输入设备编号"
+                        android:maxLength="10"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="28dp"
+                        android:paddingRight="0dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <ImageView
+                        android:id="@+id/checkin_device_equipment_number_clear"
+                        android:layout_width="23dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="-30dp"
+                        android:src="@drawable/bg_clear"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/view_background" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="机  器  码"
+                        android:textColor="@color/text_gray"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <TextView
+                        android:id="@+id/checkin_device_robot_number"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:maxLength="20"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="28dp"
+                        android:paddingRight="0dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal_size" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/view_background" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/checkin_device_submit"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bg_greenbtn"
+                android:text="提 交"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal_size" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

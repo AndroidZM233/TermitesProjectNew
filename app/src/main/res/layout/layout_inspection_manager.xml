@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/background_color"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="序号"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal_size" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="监测装置编号"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal_size" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="白蚁状态"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal_size" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/inspection_bottom_start_rl"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/text_green"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/inspection_bottom_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/start_inspection" />
+
+            <TextView
+                android:id="@+id/inspection_bottom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7dp"
+                android:layout_toRightOf="@id/inspection_bottom_icon"
+                android:text="开始巡检"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal_size" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/check_bottom_text"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="查找"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal_size" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/inspection_bottom_start_rl"
+            android:background="@color/background"
+            android:cacheColorHint="@android:color/transparent">
+
+            <com.termites.tools.EmptyViewListView
+                android:id="@+id/inspection_lv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/view_background"
+                android:dividerHeight="0.5dp"
+                android:scrollbars="none" />
+        </FrameLayout>
+    </RelativeLayout>
+</LinearLayout>

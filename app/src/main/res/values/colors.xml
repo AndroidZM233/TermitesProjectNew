@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFF</color>
+    <color name="black">#1A1A1A</color>
+    <color name="gary">#DEDEDE</color>
+    <color name="background">#E6ECE9</color>
+    <color name="background_color">#37B947</color>
+    <color name="view_background">#E2E2E2</color>
+    <color name="orange_btn_color">#E9A242</color>
+    <color name="red_btn_color">#FFFF4340</color>
+    <color name="blue_btn_color">#1EB2FC</color>
+    <color name="text_red">#FF4040</color>
+    <color name="bg_red_tv_click">#FF7A7A</color>
+    <color name="transparent_alpha">#99232323</color>
+    <color name="bg_gray_Large">#333333</color>
+    <color name="bg_gray_middle">#666666</color>
+    <color name="bg_gray_small">#999999</color>
+    <color name="transparent">#00000000</color>
+    <color name="text_gray">#888888</color>
+    <color name="text_green">#48BB5B</color>
+</resources>

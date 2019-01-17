@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="地区编号"
+                        android:textColor="@color/text_gray"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <TextView
+                        android:id="@+id/equipment_area_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:maxLength="12"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="0dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal_size" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/view_background" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="项目编号"
+                        android:textColor="@color/text_gray"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <EditText
+                        android:inputType="number"
+                        android:id="@+id/equipment_project_num"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:hint="请输入项目编号"
+                        android:maxLength="4"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="0dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <ImageView
+                        android:id="@+id/equipment_project_num_clear"
+                        android:layout_width="23dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="-30dp"
+                        android:src="@drawable/bg_clear"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/view_background" />
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="监测点编号"
+                        android:textColor="@color/text_gray"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <EditText
+                        android:inputType="number"
+                        android:id="@+id/equipment_device_num"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:hint="请输入监测点编号"
+                        android:maxLength="3"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="0dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_normal_size" />
+
+                    <ImageView
+                        android:id="@+id/equipment_device_num_clear"
+                        android:layout_width="23dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="-30dp"
+                        android:src="@drawable/bg_clear"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/view_background" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:text="经       度"
+                                android:textColor="@color/text_gray"
+                                android:textSize="@dimen/text_normal_size" />
+
+                            <TextView
+                                android:id="@+id/equipment_longitude"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@color/white"
+                                android:gravity="center_vertical"
+                                android:maxLines="2"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="30dp"
+                                android:paddingRight="0dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_normal_size" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/view_background" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:text="纬       度"
+                                android:textColor="@color/text_gray"
+                                android:textSize="@dimen/text_normal_size" />
+
+                            <TextView
+                                android:id="@+id/equipment_latitude"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@color/white"
+                                android:gravity="center_vertical"
+                                android:maxLines="2"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="30dp"
+                                android:paddingRight="0dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_normal_size" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/equipment_reset_location"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:background="@drawable/bg_green_line_btn"
+                        android:text="查看地图"
+                        android:textColor="@color/text_green"
+                        android:textSize="@dimen/text_small" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/view_background" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/equipment_chenckin"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_greenbtn"
+                android:text="登 记"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal_size" />
+
+            <Button
+                android:id="@+id/equipment_check"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_orangebtn"
+                android:text="数据校验"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal_size" />
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_jianyan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="@dimen/text_normal_size" />
+
+            <Button
+                android:id="@+id/equipment_data_downloadmap"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_bluebtn"
+                android:text="下载离线地图"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_normal_size" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

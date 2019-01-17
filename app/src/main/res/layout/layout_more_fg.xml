@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/more_top_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_title" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/more_cancelLationaccount"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_dash_greenbtn"
+        android:gravity="center"
+        android:text="注销账户"
+        android:textColor="@color/text_green"
+        android:textSize="@dimen/text_normal_size" />
+
+    <ListView
+        android:id="@+id/more_fg_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/more_cancelLationaccount"
+        android:layout_below="@id/more_top_ll"
+        android:background="@color/background"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/view_background"
+        android:dividerHeight="0.5dp"
+        android:listSelector="@drawable/bg_white_selector"
+        android:scrollbars="none" />
+
+</RelativeLayout>

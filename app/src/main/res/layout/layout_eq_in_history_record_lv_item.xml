@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|left"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/history_record_numer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg_gray_Large"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/history_record_idorstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/bg_gray_middle"
+        android:textSize="@dimen/text_largle" />
+
+    <TextView
+        android:id="@+id/history_record_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/bg_gray_middle"
+        android:textSize="@dimen/text_largle" />
+
+    <TextView
+        android:id="@+id/history_record_longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/bg_gray_middle"
+        android:textSize="@dimen/text_largle"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/history_record_latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/bg_gray_middle"
+        android:textSize="@dimen/text_largle"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/history_record_uploadstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/bg_gray_middle"
+        android:textSize="@dimen/text_largle" />
+</LinearLayout>
+

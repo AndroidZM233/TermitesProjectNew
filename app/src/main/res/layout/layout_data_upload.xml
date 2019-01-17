@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/data_upload_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/data_upload_tab_ll"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/data_upload_tab_checkdata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:text="登记数据"
+                    android:textColor="@color/text_green"
+                    android:textSize="@dimen/text_normal_size" />
+
+
+                <TextView
+                    android:id="@+id/data_upload_tab_inspectiondata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:text="巡检数据"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_normal_size" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/data_upload_tab_line"
+                android:layout_width="100dp"
+                android:layout_height="4dp"
+                android:layout_below="@id/data_upload_tab_ll"
+                android:background="@color/text_green" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/data_upload_bottom_rl"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_white_with_line"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/data_upload_checkmap_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/data_upload_checkmap_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/dataupload_lookmap_icon" />
+
+                <TextView
+                    android:id="@+id/data_upload_checkmap_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_toRightOf="@id/data_upload_checkmap_icon"
+                    android:text="查看地图"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_normal_size" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/data_upload_submit_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:background="@color/text_green"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/data_upload_submit_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/dataupload_upload_icon" />
+
+                <TextView
+                    android:id="@+id/data_upload_submit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_toRightOf="@id/data_upload_submit_icon"
+                    android:text="上传数据"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_normal_size" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <com.termites.tools.NoScrollViewPager
+            android:id="@+id/data_upload_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/data_upload_bottom_rl"
+            android:layout_below="@id/data_upload_rl"
+            android:background="@color/background"
+            android:scrollbars="none" />
+    </RelativeLayout>
+</LinearLayout>

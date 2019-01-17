@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical|left"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dataupload_lv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bg_gray_Large"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/dataupload_lv_idorstate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/bg_gray_middle"
+            android:textSize="@dimen/text_largle" />
+
+        <TextView
+            android:id="@+id/dataupload_lv_longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/bg_gray_middle"
+            android:textSize="@dimen/text_largle"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/dataupload_lv_latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/bg_gray_middle"
+            android:textSize="@dimen/text_largle"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/dataupload_lv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/bg_gray_middle"
+            android:textSize="@dimen/text_largle" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/dataupload_lv_check_cb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bg_green_checkbox"
+        android:button="@null"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center_vertical"
+        android:visibility="visible" />
+</RelativeLayout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/tv_id"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:hint="监测装置编号"
+            android:maxLength="12"
+            android:paddingBottom="10dp"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn_check_start"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_greenbtn"
+            android:text="开始查找"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal_size" />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn_check_stop"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_redbtn"
+            android:text="停止查找"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal_size"
+            android:visibility="gone" />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn_close"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_greenbtn"
+            android:text="关闭"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal_size" />
+    </LinearLayout>
+
+</LinearLayout>

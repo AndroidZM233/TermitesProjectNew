@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/homepage_gv_bg_line" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:padding="20dp" >
+
+        <ImageView
+            android:id="@+id/homepage_gv_img"
+            android:layout_width="39dp"
+            android:layout_height="47.5dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/checkin_icon"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/homepage_gv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homepage_gv_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:maxLines="1"
+            android:maxHeight="150dp"
+            android:maxWidth="70dp"
+            android:text="装置登记"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_normal_size" />
+    </RelativeLayout>
+
+</RelativeLayout>
