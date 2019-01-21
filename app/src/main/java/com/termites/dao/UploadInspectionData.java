@@ -15,7 +15,7 @@ import org.json.JSONArray;
  */
 
 public class UploadInspectionData {
-    public UploadInspectionData(Context context, JSONArray jsonArray, final SuccessCallback successCallback, final FailCallback failCallback) {
+    public UploadInspectionData(Context context, int count, JSONArray jsonArray, final SuccessCallback successCallback, final FailCallback failCallback) {
         new NetConnection(context, HttpConfig.URL_UPLOAD_INSPECTION, Request.Method.POST, new NetConnection.SuccessCallback() {
 
             @Override
@@ -33,7 +33,7 @@ public class UploadInspectionData {
                     failCallback.onFail();
                 }
             }
-        },"list",jsonArray);
+        }, "list", jsonArray, "count", count);
     }
 
     // 成功传递一个结果进来

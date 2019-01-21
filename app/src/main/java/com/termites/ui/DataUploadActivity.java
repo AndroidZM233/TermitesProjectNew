@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -522,15 +523,14 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                         if (mCheckInAdapter.getSelected().get(i).booleanValue()) {
                             try {
                                 JSONObject jsonObject = new JSONObject();
-                                //
                                 jsonObject.put(LocalcacherConfig.KEY_Custom, LocalcacherConfig.getCustomId());
                                 EquipmentBean bean = mCheckInAdapter.getItem(i);
                                 jsonObject.put(LocalcacherConfig.KEY_Device, bean.getEquipmentId());
                                 jsonObject.put(LocalcacherConfig.KEY_Project, bean.getEquipmentProjectId());
-                                jsonObject.put(LocalcacherConfig.KEY_Longitude, bean.getEquipmentLongitude());
-                                jsonObject.put(LocalcacherConfig.KEY_Latitude, bean.getEquipmentLatitude());
+                                jsonObject.put(LocalcacherConfig.KEY_Longitude, TextUtils.isEmpty(bean.getEquipmentLongitude()) ? "" : bean.getEquipmentLongitude());
+                                jsonObject.put(LocalcacherConfig.KEY_Latitude, TextUtils.isEmpty(bean.getEquipmentLatitude()) ? "" : bean.getEquipmentLatitude());
                                 jsonObject.put(LocalcacherConfig.KEY_EquipmentTime, bean.getEquipmentCheckTime());
-                                jsonObject.put(LocalcacherConfig.KEY_Location, bean.getEquipmentLocation());
+                                jsonObject.put(LocalcacherConfig.KEY_Location, TextUtils.isEmpty(bean.getEquipmentLocation()) ? "" : bean.getEquipmentLocation());
                                 jsonArray.put(jsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -546,8 +546,6 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                     if (mInspectionAdapter.getCount() == 0) {
                         return;
                     }
-                    boolean isAllClear;
-
                     JSONArray jsonArray = new JSONArray();
 
                     for (int i = 0; i < mInspectionAdapter.getSelected().size(); i++) {
@@ -556,26 +554,21 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                                 JSONObject jsonObject = new JSONObject();
                                 InspectionBean bean = mInspectionAdapter.getItem(i);
 
-                                jsonObject.put(LocalcacherConfig.KEY_Device,bean.getInspecId());
-                                jsonObject.put(LocalcacherConfig.KEY_Status,bean.getInspectionTermiteState().equals("有") ? "1" : "0");
-                                jsonObject.put(LocalcacherConfig.KEY_InspectionTime,bean.getInspectionTime());
-                                jsonObject.put(LocalcacherConfig.KEY_InspectionUser,LocalcacherConfig.getUserName() + "");
+                                jsonObject.put(LocalcacherConfig.KEY_Device, bean.getInspecId());
+                                jsonObject.put(LocalcacherConfig.KEY_Status, bean.getInspectionTermiteState().equals("有") ? "1" : "0");
+                                jsonObject.put(LocalcacherConfig.KEY_InspectionTime, bean.getInspectionTime());
+                                jsonObject.put(LocalcacherConfig.KEY_InspectionUser, LocalcacherConfig.getUserName() + "");
                                 jsonArray.put(jsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     }
-                    if (jsonArray.length() == mInspectionAdapter.getCount()) {
-                        isAllClear = true;
-                    } else {
-                        isAllClear = false;
-                    }
                     if (jsonArray.length() == 0) {
                         toast("请选择上传的数据");
                         return;
                     }
-                    uploadInspectionData(isAllClear, jsonArray);
+                    uploadInspectionData(jsonArray);
                 }
                 break;
             case R.id.data_upload_checkmap_rl:
@@ -706,16 +699,18 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
     AdapterView.OnItemClickListener onItemClickListener_CheckIn = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (mCheckInAdapter.getOpenEditModal())
+            if (mCheckInAdapter.getOpenEditModal()) {
                 setSelectItem(position);
+            }
         }
     };
 
     AdapterView.OnItemClickListener onItemClickListener_Inspection = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (mInspectionAdapter.getOpenEditModal())
+            if (mInspectionAdapter.getOpenEditModal()) {
                 setSelectItem(position);
+            }
         }
     };
 
@@ -757,7 +752,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
     // 装置登记数据上传
     public void uploadCheckInData(final JSONArray jsonArray) {
         showProgress("数据上传中,请稍后...");
-        new UploadEquipmentData(getActivity(), jsonArray, new UploadEquipmentData.SuccessCallback() {
+        new UploadEquipmentData(getActivity(), jsonArray.length(), jsonArray, new UploadEquipmentData.SuccessCallback() {
 
             @Override
             public void onSuccess(NetConnectionBean bean) {
@@ -819,9 +814,9 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
     }
 
     //装置巡检数据上传
-    public void uploadInspectionData(final boolean isAllClear, final JSONArray jsonArray) {
+    public void uploadInspectionData(final JSONArray jsonArray) {
         showProgress("数据上传中,请稍后...");
-        new UploadInspectionData(getActivity(), jsonArray, new UploadInspectionData.SuccessCallback() {
+        new UploadInspectionData(getActivity(), jsonArray.length(), jsonArray, new UploadInspectionData.SuccessCallback() {
 
             @Override
             public void onSuccess(NetConnectionBean bean) {
@@ -831,18 +826,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 } else {
                     toast("巡检数据上传成功", R.drawable.toast_icon_suc);
                     // 上传成功,删除掉对应的数据并重新查询数据库
-                    if (isAllClear) {
-                        dataHelper.clearInspectionData();
-                        mInspectionAdapter.clear();
-                    } else {
-                        deleteInspectionData(jsonArray);
-                    }
+                    deleteInspectionData(jsonArray);
                     mInspectionLv.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (!isAllClear) {
-                                getInspectionData();
-                            }
+                            getInspectionData();
                             onClickTitleBack(getTitleBackView());
                         }
                     }, 1000);
@@ -860,14 +848,15 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
 
     // 删除多条巡检数据
     public void deleteInspectionData(JSONArray jsonArray) {
-//        if (device.contains(",")) {
-//            String[] device_s = device.split(",");
-//            for (int i = 0; i < device_s.length; i++) {
-//                dataHelper.deleteInspectionOneData(device_s[i]);
-//            }
-//        } else {
-//            dataHelper.deleteInspectionOneData(device);
-//        }
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                String device = jsonObject.getString(LocalcacherConfig.KEY_Device);
+                dataHelper.deleteInspectionOneData(device);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     // 删除某条巡检数据

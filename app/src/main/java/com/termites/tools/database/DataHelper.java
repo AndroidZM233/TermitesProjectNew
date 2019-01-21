@@ -38,7 +38,7 @@ public class DataHelper {
     public List<InspectionBean> getInspectionAllData() {
         List<InspectionBean> mDatas = new ArrayList<>();
         Cursor cursor = db.rawQuery("select * from " + INSPECTIONTABLE +
-                " ORDER BY " + InspectionTable.INSPECTIONTIME + " DESC LIMIT 50", null);
+                " ORDER BY " + InspectionTable.INSPECTIONTIME + " DESC", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast() && !TextUtils.isEmpty(cursor.getString(1))) {
             InspectionBean inspectionBean = new InspectionBean();
@@ -81,11 +81,11 @@ public class DataHelper {
         Cursor cursor;
         if (isShowUploadData) {
             cursor = db.rawQuery("select * from " +
-                    EQUIPMENTTABLE + " ORDER BY " + EquipmentTable.EQUIPMENTCHECKINTIME + " DESC LIMIT 50", null);
+                    EQUIPMENTTABLE + " ORDER BY " + EquipmentTable.EQUIPMENTCHECKINTIME + " DESC", null);
         } else {
             cursor = db.rawQuery("select * from " + EQUIPMENTTABLE +
                     " where " + EquipmentTable.EQUIPMENTUPLOADSTATE + "=?" +
-                    " order by " + EquipmentTable.EQUIPMENTCHECKINTIME + " DESC LIMIT 50", new String[]{"未上传"});
+                    " order by " + EquipmentTable.EQUIPMENTCHECKINTIME + " DESC", new String[]{"未上传"});
         }
         cursor.moveToFirst();
         while (!cursor.isAfterLast() && !TextUtils.isEmpty(cursor.getString(1))) {
@@ -124,16 +124,6 @@ public class DataHelper {
                         bean.getEquipmentCheckTime(),
                         bean.getEquipmentLongitude(),
                         bean.getEquipmentLatitude()});
-    }
-
-    // 清空Inspection表中数据
-    public void clearInspectionData() {
-        db.delete(INSPECTIONTABLE, null, null);
-    }
-
-    // 清空Equipment表中数据
-    public void clearEquipmentData() {
-        db.delete(EQUIPMENTTABLE, null, null);
     }
 
     // 往Inspection表中插入数据

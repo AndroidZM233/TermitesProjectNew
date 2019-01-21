@@ -9,10 +9,8 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.serialport.SerialPort;
 
 import com.termites.tools.ShowToast;
 import com.termites.tools.config.LocalcacherConfig;
@@ -31,7 +29,7 @@ public class AuxiliaryFunctionTools {
     public static final int CameraRequestCode = 10;
     // 打开相册的requestCode
     public static final int PhotoAlbumRequestCode = 20;
-    private static SerialPort mSerialport = null;
+//    private static SerialPort mSerialport = null;
 
     public static class ApplicationType {
         public static final int CAMERA = 1;
@@ -96,19 +94,19 @@ public class AuxiliaryFunctionTools {
 
     // 打开或关闭手持仪的手电筒
     public static void flashLight(boolean isOpen) {
-        try {
-            if (mSerialport == null) {
-                mSerialport = new SerialPort();
-            }
-            if (isOpen) {
+//        try {
+//            if (mSerialport == null) {
+//                mSerialport = new SerialPort();
+//            }
+//            if (isOpen) {
 //                mSerialport.power3v3on();
-            } else {
+//            } else {
 //                mSerialport.power3v3off();
-            }
-            mSerialport = null;
-        } catch (Exception e) {
-            ShowToast.getInstance().show("手电筒打开失败");
-        }
+//            }
+//            mSerialport = null;
+//        } catch (Exception e) {
+//            ShowToast.getInstance().show("手电筒打开失败");
+//        }
 
     }
 

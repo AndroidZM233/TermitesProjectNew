@@ -5,7 +5,6 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.SystemProperties;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
@@ -16,7 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FlashLightActivity extends AppCompatActivity  {
+public class FlashLightActivity extends AppCompatActivity {
 
     private ToggleButton mBtn;
     Camera camera=null;// = Camera.open();

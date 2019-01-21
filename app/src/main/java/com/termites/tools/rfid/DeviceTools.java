@@ -6,14 +6,11 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.termites.tools.Tools;
 import com.speedata.libuhf.IUHFService;
-import com.speedata.libuhf.UHFManager;
-import com.speedata.libuhf.bean.Tag_Data;
 import com.termites.tools.ShowToast;
 import com.termites.tools.javabean.EpcStatusBean;
 import com.termites.ui.OurApplication;
@@ -91,17 +88,25 @@ public class DeviceTools {
         IUHFService reader = null;
         try {
             reader = getReader();
+            reader.select_card(1, "", false);
             int maxCount = MAX_COUNT;
             int indexCount = 0;
             while (indexCount < maxCount) {
-                String readArea = reader.read_area(1, "2", "6", "00000000");
+//                String readArea = reader.read_area(1, "2", "6", "00000000");
+                byte[] spdata = reader.read_area(1, 2, 6,
+                        "00000000");
                 indexCount++;
-                if (TextUtils.isEmpty(readArea)) {
+                if (spdata == null) {
+
                     continue;
                 }
                 String epc = null;
                 try {
+                    String readArea = Tools.Bytes2HexString(spdata, spdata.length);
                     epc = Tools.hexStringToString(readArea);
+                    if (readArea.equalsIgnoreCase("E200680B0000000000000000")) {
+                        return readArea;
+                    }
                 } catch (UnsupportedEncodingException e1) {
                     e1.printStackTrace();
                 }
@@ -133,14 +138,20 @@ public class DeviceTools {
     /**
      * 向EPC写入标签(监测点编号)
      */
-    public synchronized int writeEPC(String Epc) {
+    public synchronized int writeEPC(String select, String Epc) {
         IUHFService reader = null;
         try {
             reader = getReader();
+            if (!select.equalsIgnoreCase("E200680B0000000000000000")) {
+                select = Tools.stringToHexString(select);
+            }
+
+            int selectCard = reader.select_card(1, select, true);
+            Log.d("ZM", "writeEPC: " + select + "--" + selectCard);
             int maxCount = MAX_COUNT;
             int indexCount = 0;
             while (indexCount < maxCount) {
-                Thread.sleep(20);
+//                Thread.sleep(20);
                 indexCount++;
                 String toHexString = Tools.stringToHexString(Epc);
                 return reader.write_area(1, "2",
@@ -192,6 +203,7 @@ public class DeviceTools {
 //    }
 
     public void longClickStatus(final Handler handler, boolean isLong) {
+
         if (longClickThread == null) {
             longClickThread = new LongClickThread(handler, isLong);
             longClickThread.start();
@@ -273,15 +285,31 @@ public class DeviceTools {
         public void run() {
             super.run();
             final IUHFService reader = getReader();
+            int count = 0;
             while (!interrupted()) {
 //                SystemClock.sleep(400);
+                count++;
+                if (count > 5 && !isLong) {
+                    Message msg = new Message();
+                    msg.arg1 = 0x2;
+                    handler.sendMessage(msg);
+                    Log.d("ZM", "handler发送02");
+                    if (!isLong) {
+                        longClickStop();
+                    }
+                    return;
+                }
                 reader.select_card(1, "", false);
                 Log.d("ZM", "readEPCStatus: ");
 //                SystemClock.sleep(200);
-                String epc = reader.read_area(1, "2", "6", "00000000");
-                Log.d("ZM", "读到的EPC: " + epc);
-                if (!TextUtils.isEmpty(epc)) {
+//                String epc = reader.read_area(1, "2", "6", "00000000");
+                byte[] spdata = reader.read_area(1, 2, 6,
+                        "00000000");
+                Log.d("ZM", "读到的EPC byte[]: " + spdata);
+                if (spdata != null) {
                     try {
+                        String epc = Tools.Bytes2HexString(spdata, spdata.length);
+                        Log.d("ZM", "读到的EPC: " + epc);
                         if (Tools.hexStringToString(epc).length() == 12) {
                             Log.d("ZM", "符合的EPC: " + epc);
                             readEPCStatus(reader, mContext, epc, handler, isLong);
@@ -290,6 +318,8 @@ public class DeviceTools {
                         e.printStackTrace();
                     }
                 }
+
+
             }
 
         }
@@ -309,19 +339,28 @@ public class DeviceTools {
         public void run() {
             super.run();
             final IUHFService reader = getReader();
+            int count = 0;
             while (!interrupted()) {
-                reader.select_card(1, "", false);
-                Log.d("ZM", "readEPCStatus: ");
-                if (!TextUtils.isEmpty(epc)) {
-                    try {
-                        if (Tools.hexStringToString(epc).length() == 12) {
+                count++;
+                if (count < 5) {
+                    reader.select_card(1, "", false);
+                    Log.d("ZM", "readEPCStatus: ");
+                    if (!TextUtils.isEmpty(epc)) {
+                        if (epc.length() == 12) {
                             Log.d("ZM", "符合的EPC: " + epc);
                             readEPCStatus(reader, mContext, epc, handler);
+                            return;
                         }
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
                     }
+                } else {
+                    Message msg = new Message();
+                    msg.arg1 = 0x2;
+                    handler.sendMessage(msg);
+                    Log.d("ZM", "handler发送02");
+                    JiaoYanStop();
+                    return;
                 }
+
             }
 
         }
@@ -362,30 +401,24 @@ public class DeviceTools {
 
         int count = 0;
         try {
-            while (IsReading && count < 10) {
+            while (count < 5) {
                 count++;
 //                SystemClock.sleep(200);
-                String area = reader.read_area(1, "32", "1",
+//                Thread.sleep(20);
+                byte[] spdata = reader.read_area(1, 32, 1,
                         "00000000");
-                Log.d("ZM", "读卡: " + area + "--" + count);
-                if (TextUtils.isEmpty(area)) {
-                    continue;
-                }
-                byte[] spdata = Tools.HexString2Bytes(area);
+
+//                if (TextUtils.isEmpty(area)) {
+//                    continue;
+//                }
+//                byte[] spdata = Tools.HexString2Bytes(area);
                 if (spdata == null) {
+                    Log.d("ZM", "白蚁标记为=null");
                     continue;
                 }
-                if (spdata != null && spdata.length > 1) {
-                    if (currentEPC.equalsIgnoreCase("E200680B0000000000000000") || TextUtils.isEmpty(currentEPC)) {
-                        Message msg = new Message();
-                        msg.arg1 = 0x2;
-                        handler.sendMessage(msg);
-                        Log.d("ZM", "handler发送02");
-                        if (!isLong) {
-                            longClickStop();
-                        }
-                        return;
-                    }
+                Log.d("ZM", "读卡: " + Tools.Bytes2HexString(spdata, spdata.length) + "--" + count);
+                if (spdata.length == 2) {
+
                     //判断高位是否为1
                     if ((byte) (spdata[0] & 0x80) == (byte) 0x80) {
                         if (IsPlayAudio) {
@@ -398,7 +431,15 @@ public class DeviceTools {
                         }
                         epcStatusBean.setState("有");
                     }
-                    epcStatusBean.setCurrentEpc(Tools.hexStringToString(currentEPC));
+
+                    if (currentEPC.equalsIgnoreCase("E200680B0000000000000000")
+                            || TextUtils.isEmpty(currentEPC)) {
+                        epcStatusBean.setCurrentEpc("未登记");
+                    } else {
+                        String hexStringToString = Tools.hexStringToString(currentEPC);
+                        epcStatusBean.setCurrentEpc(hexStringToString);
+                    }
+
                     Message msg = new Message();
                     msg.arg1 = 0x1;
                     msg.obj = epcStatusBean;
@@ -409,7 +450,6 @@ public class DeviceTools {
                     }
                     return;
                 }
-//                }
             }
             Message msg = new Message();
             msg.arg1 = 0x2;
@@ -440,32 +480,26 @@ public class DeviceTools {
                                             String currentEPC, Handler handler) {
         IsReading = true;
         EpcStatusBean epcStatusBean = new EpcStatusBean();
+        try {
+            currentEPC = Tools.stringToHexString(currentEPC);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         int selectCard = reader.select_card(1, currentEPC, true);
         Log.d("ZM", "选卡: " + currentEPC + "--" + selectCard);
 
         int count = 0;
         try {
-            while (IsReading && count < 10) {
+            while (count < 5) {
                 count++;
-                String area = reader.read_area(1, "32", "1",
+                byte[] spdata = reader.read_area(1, 32, 1,
                         "00000000");
-                Log.d("ZM", "读卡: " + area + "--" + count);
-                if (TextUtils.isEmpty(area)) {
-                    continue;
-                }
-                byte[] spdata = Tools.HexString2Bytes(area);
                 if (spdata == null) {
+                    Log.d("ZM", "白蚁标记为=null");
                     continue;
                 }
-                if (spdata != null && spdata.length > 1) {
-                    if (currentEPC.equalsIgnoreCase("E200680B0000000000000000") || TextUtils.isEmpty(currentEPC)) {
-                        Message msg = new Message();
-                        msg.arg1 = 0x2;
-                        handler.sendMessage(msg);
-                        Log.d("ZM", "handler发送02");
-                        JiaoYanStop();
-                        return;
-                    }
+                Log.d("ZM", "读卡: " + Tools.Bytes2HexString(spdata, spdata.length) + "--" + count);
+                if (spdata.length == 2) {
                     //判断高位是否为1
                     if ((byte) (spdata[0] & 0x80) == (byte) 0x80) {
                         if (IsPlayAudio) {
@@ -478,7 +512,13 @@ public class DeviceTools {
                         }
                         epcStatusBean.setState("有");
                     }
-                    epcStatusBean.setCurrentEpc(Tools.hexStringToString(currentEPC));
+                    if (currentEPC.equalsIgnoreCase("E200680B0000000000000000")
+                            || TextUtils.isEmpty(currentEPC)) {
+                        epcStatusBean.setCurrentEpc("未登记");
+                    } else {
+                        String hexStringToString = Tools.hexStringToString(currentEPC);
+                        epcStatusBean.setCurrentEpc(hexStringToString);
+                    }
                     Message msg = new Message();
                     msg.arg1 = 0x1;
                     msg.obj = epcStatusBean;

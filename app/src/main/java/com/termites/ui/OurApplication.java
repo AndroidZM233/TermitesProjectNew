@@ -29,8 +29,9 @@ public class OurApplication extends Application {
         // 异常信息捕捉
         CrashHandlers handler = CrashHandlers.getInstance();
         handler.init(this);
-
         mReader = UHFManager.getUHFService(this);
+//        mReader.set_antenna_power(30);
+//        mReader.set_freq_region(2);
     }
 
     public IUHFService getmReader() {

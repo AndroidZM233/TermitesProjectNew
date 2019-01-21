@@ -13,12 +13,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.speedata.libuhf.IUHFService;
-import com.speedata.libuhf.bean.Tag_Data;
+import com.speedata.libuhf.bean.SpdInventoryData;
+import com.speedata.libuhf.interfaces.OnSpdInventoryListener;
 import com.termites.R;
 import com.termites.tools.Tools;
 import com.termites.tools.rfid.DeviceTools;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by 张明_ on 2017/11/6.
@@ -56,7 +55,7 @@ public class CheckDialog extends Dialog implements View.OnClickListener {
 
     private void initView() {
         mTvId = (EditText) findViewById(R.id.tv_id);
-        mTvId.setText("573EA0010001");
+        mTvId.setText("");
         mBtnCheckStart = (Button) findViewById(R.id.btn_check_start);
         mBtnCheckStart.setOnClickListener(this);
         mBtnCheckStop = (Button) findViewById(R.id.btn_check_stop);
@@ -77,9 +76,9 @@ public class CheckDialog extends Dialog implements View.OnClickListener {
                 mBtnCheckStart.setVisibility(View.GONE);
                 mBtnCheckStop.setVisibility(View.VISIBLE);
 
-                reader.setListener(new IUHFService.Listener() {
+                reader.setOnInventoryListener(new OnSpdInventoryListener() {
                     @Override
-                    public void update(Tag_Data var1) {
+                    public void getInventoryData(SpdInventoryData var1) {
                         try {
                             synchronized (this) {
                                 String epc = Tools.hexStringToString(var1.epc);

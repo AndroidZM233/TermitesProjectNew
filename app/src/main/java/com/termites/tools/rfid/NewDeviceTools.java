@@ -1,6 +1,9 @@
 package com.termites.tools.rfid;
 
 import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+
 
 /**
  * Created by LF on 16/11/14.
@@ -29,20 +32,20 @@ public class NewDeviceTools {
     }
 
     public static void readMessage(Handler handler) {
-//        mHandler = handler;
-//        if (myThread == null) {
-//            myThread = new MyThread();
-//        }
-//        open();
-//        myThread.startRead();
+        mHandler = handler;
+        if (myThread == null) {
+            myThread = new MyThread();
+        }
+        open();
+        myThread.startRead();
     }
 
     public static void stopReadMessage() {
-//        if (myThread != null) {
-//            myThread.stopRead();
-//            myThread = null;
-//            mHandler = null;
-//        }
+        if (myThread != null) {
+            myThread.stopRead();
+            myThread = null;
+            mHandler = null;
+        }
     }
 
     public static void destory() {
@@ -79,8 +82,8 @@ public class NewDeviceTools {
         }
 
         public void startRead() {
-//            this.start();
-//            isReading = true;
+            this.start();
+            isReading = true;
         }
     }
 }

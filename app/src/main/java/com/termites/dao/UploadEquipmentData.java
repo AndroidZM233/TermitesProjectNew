@@ -16,7 +16,7 @@ import org.json.JSONArray;
  */
 
 public class UploadEquipmentData {
-    public UploadEquipmentData(Context context, JSONArray jsonArray, final SuccessCallback successCallback, final FailCallback failCallback) {
+    public UploadEquipmentData(Context context, int count, JSONArray jsonArray, final SuccessCallback successCallback, final FailCallback failCallback) {
 
         new NetConnection(context, HttpConfig.URL_UPLOAD_EQUIPMENT, Request.Method.POST, new NetConnection.SuccessCallback() {
 
@@ -35,7 +35,7 @@ public class UploadEquipmentData {
                     failCallback.onFail();
                 }
             }
-        }, "list", jsonArray
+        }, "list", jsonArray, "count", count
                 /*"?" + LocalcacherConfig.KEY_Custom + "=" + custom +
                 "&" + LocalcacherConfig.KEY_Device + "=" + device +
                 "&" + LocalcacherConfig.KEY_Project + "=" + project +

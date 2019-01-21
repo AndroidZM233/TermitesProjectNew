@@ -72,8 +72,6 @@
                 android:textSize="@dimen/text_normal_size" />
 
         </RelativeLayout>
-
-
         <TextView
             android:gravity="center"
             android:layout_alignParentBottom="true"
@@ -85,7 +83,6 @@
             android:text="查找"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal_size" />
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

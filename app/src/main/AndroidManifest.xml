@@ -9,6 +9,7 @@
         android:resizeable="true"
         android:smallScreens="true" />
 
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -37,10 +38,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <!--<meta-data-->
-            <!--android:name="com.baidu.lbsapi.API_KEY"-->
-            <!--android:value="8OvYkxjNgAlkFCxgGqFqa5Lh5py5Gcuk" />-->
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="4lGdTUjb6aKPVE6KRbuEgOXUfc97Uadr" />
@@ -50,7 +47,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.BackgroundTranslucent" >
+            android:theme="@style/Theme.BackgroundTranslucent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,7 +61,7 @@
             android:name=".ui.MainActivity"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
 
         </activity>
         <activity
@@ -96,7 +93,7 @@
         <activity
             android:name=".ui.MapViewActivity"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".ui.FlashLightActivity"></activity>
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -104,13 +101,10 @@
 
         <receiver android:name=".ui.BootBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-                <category android:name="android.intent.category.HOME" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <category android:name="android.intent.category.HOME"></category>
             </intent-filter>
         </receiver>
-
-        <activity android:name=".ui.FlashLightActivity"></activity>
     </application>
 
 </manifest>

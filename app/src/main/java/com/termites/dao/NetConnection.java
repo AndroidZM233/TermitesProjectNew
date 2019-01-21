@@ -37,6 +37,7 @@ public class NetConnection {
     private static RequestQueue mQueue = null;
     private static boolean isToast = true;
     private String mNetUrl;
+    private StringRequest request;
     private Map<String, String> post_data = new HashMap<String, String>();
     private String get_data = "";
 
@@ -57,9 +58,7 @@ public class NetConnection {
 
         switch (method) {
             case Request.Method.POST:
-                RequestQueue requestQueue = Volley.newRequestQueue(context);
-
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, mNetUrl,
+                request = new StringRequest(Request.Method.POST, mNetUrl,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -104,11 +103,11 @@ public class NetConnection {
                         return post_data;
                     }
                 };
-                requestQueue.add(stringRequest);
-
+                request.setRetryPolicy(new DefaultRetryPolicy(300 * 1000, 1, 1.0f));
+                mQueue.add(request);
                 break;
             case Request.Method.GET:
-                StringRequest request = new StringRequest(Request.Method.GET, mNetUrl, new Response.Listener<String>() {
+                request = new StringRequest(Request.Method.GET, mNetUrl, new Response.Listener<String>() {
                     public void onResponse(String response) {
                         try {
                             if (response != null) {

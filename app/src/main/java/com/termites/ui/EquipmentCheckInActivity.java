@@ -34,6 +34,7 @@ import com.termites.tools.PopWindowShowTwoButton;
 import com.termites.tools.ShowInputMethodManager;
 import com.termites.tools.ShowToast;
 import com.termites.tools.SimpleEditTextTextWatcher;
+import com.termites.tools.Tools;
 import com.termites.tools.config.LocalcacherConfig;
 import com.termites.tools.config.MethodConfig;
 import com.termites.tools.database.DataHelper;
@@ -44,6 +45,7 @@ import com.termites.tools.rfid.DeviceTools;
 import com.termites.tools.rfid.NewDeviceTools;
 import com.termites.ui.base.BaseWithTitleBackActivity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
@@ -69,8 +71,6 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
     private Button equipment_chenckin;
     // 数据校验
     private Button equipment_check;
-    //检验数据显示
-    private TextView tv_jianyan;
     // 下载离线地图包
     private Button equipment_data_downloadmap;
     // 数据库工具类
@@ -91,6 +91,8 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
     private PopWindowShowTwoButton showTwoButton;
     // 当前经纬度
     private double mLongitude = 0.0d, mLatitude = 0.0d;
+    private String readEpc;
+    private String successWrite = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +147,6 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
 
         equipment_data_downloadmap = $_Act(R.id.equipment_data_downloadmap);
         equipment_data_downloadmap.setOnClickListener(this);
-
-        tv_jianyan = $_Act(R.id.tv_jianyan);
 
         // 初始化定位
         initLocation();
@@ -300,6 +300,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
     OnGetGeoCoderResultListener onGetGeoCoderResultListener = new OnGetGeoCoderResultListener() {
         @Override
         public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
         }
 
         @Override
@@ -350,10 +351,9 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                 }
                 break;
             case R.id.equipment_chenckin:
-                String areanum = equipment_area_num.getText().toString();
-                String projectnum = equipment_project_num.getText().toString();
+                final String areanum = equipment_area_num.getText().toString();
                 String devicenum = equipment_device_num.getText().toString();
-
+                String projectnum = equipment_project_num.getText().toString();
                 if (areanum.contains("未同步到地区编号")) {
                     toast("请在登录界面进行数据同步");
                     return;
@@ -416,9 +416,9 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                         NewDeviceTools.readMessage(mHandler);
                     } else {
                         // 先读取监测点装置的编号
-                        String readEpc = DeviceTools.getDeviceToolsInstance(getApplicationContext())
+                        readEpc = DeviceTools.getDeviceToolsInstance(getApplicationContext())
                                 .readEPC();
-                        Log.w(DeviceTools.LogTag, "readEpc: " + readEpc);
+                        Log.w("ZM", "readEpc: " + readEpc);
                         judageCurrentEpc(readEpc);
                     }
                 } else {
@@ -428,16 +428,24 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
             case R.id.equipment_check:
                 if (LocalcacherConfig.isCloseTest) {
 //                    String readEpc = DeviceTools.getDeviceToolsInstance().readEPC();
-//                    DeviceTools.getDeviceToolsInstance(getApplicationContext())
-//                            .readEPCStatus(myHandler);
-                    areanum = equipment_area_num.getText().toString();
-                    devicenum = equipment_device_num.getText().toString();
-                    projectnum = equipment_project_num.getText().toString();
-                    // 对监测点编号进行拼接
-                    String inputEpc = areanum + projectnum + devicenum;
-                    DeviceTools.getDeviceToolsInstance(getApplicationContext())
-                            .JiaoYanStart(myHandler, inputEpc);
+//                    EpcStatusBean epcStatusBean = DeviceTools.getDeviceToolsInstance().readEPCStatus(getActivity());
+//                    if (!TextUtils.isEmpty(readEpc)) {
+//                        showErrorDialog("当前监测点编号: " + readEpc +
+//                                "\n白蚁状态: " + epcStatusBean.getState(), equipment_check);
+//                    } else if (readEpc.equals("未登记")) {
+//                        toast("当前设备未登记,请先登记!");
+//                    } else {
+//                        toast("校验失败,请重试!");
+//                    }
+//                    DeviceTools.getDeviceToolsInstance().pauseReaderEPC();
 
+                    if (TextUtils.isEmpty(successWrite)) {
+                        toast("请先登记");
+                    } else {
+                        showProgress("正在校验数据,请稍后...");
+                        DeviceTools.getDeviceToolsInstance(getApplicationContext())
+                                .JiaoYanStart(myHandler, successWrite);
+                    }
                 } else {
                     showErrorDialog("当前监测点编号: " + "测试111111111" +
                             "\n白蚁状态: " + "无", equipment_check);
@@ -477,6 +485,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            hideProgress();
             if (msg.arg1 == 0x1) {
                 EpcStatusBean epcStatusBean = (EpcStatusBean) msg.obj;
                 if (epcStatusBean != null) {
@@ -491,7 +500,6 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
             DeviceTools.getDeviceToolsInstance(getApplicationContext()).pauseReaderEPC();
         }
     };
-
 
     Handler mHandler = new Handler() {
         @Override
@@ -508,7 +516,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
         final String devicenum = equipment_device_num.getText().toString();
         final String projectnum = equipment_project_num.getText().toString();
         // 对监测点编号进行拼接
-        String inputEpc = areanum + projectnum + devicenum;
+        final String inputEpc = areanum + projectnum + devicenum;
         if (!TextUtils.isEmpty(readEpc)) {
             if (inputEpc.equals(readEpc)) {
                 showErrorDialog(inputEpc + "与装置中的监测点编号相同,请重新输入", equipment_chenckin);
@@ -520,7 +528,12 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                     showTwoButton.setBtnSureText("确定");
                     showTwoButton.setOnClickListener(onClickListener_showTwoButton);
                 }
-                showTwoButton.show("当前装置中的监测点编号为: " + readEpc + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
+                if (readEpc.equalsIgnoreCase("E200680B0000000000000000")) {
+                    showTwoButton.show("当前装置中的监测点编号为: " + "未登记" + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
+                } else {
+                    showTwoButton.show("当前装置中的监测点编号为: " + readEpc + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
+                }
+
             }
         } else {
             showProgress("正在登记装置数据,请稍后...");
@@ -531,7 +544,8 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
             if (LocalcacherConfig.isUseNewDeviceCode) {
                 NewDeviceTools.wirteMessage(inputEpc);
             } else {
-                writeEPCState = DeviceTools.getDeviceToolsInstance(getApplicationContext()).writeEPC(inputEpc);
+                writeEPCState = DeviceTools.getDeviceToolsInstance(getApplicationContext())
+                        .writeEPC(readEpc, inputEpc);
             }
             final int finalWriteEPCState = writeEPCState;
             equipment_chenckin.postDelayed(new Runnable() {
@@ -544,17 +558,25 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                             // 直接写入本地数据库
                             insertEquipmentDataBase(areanum, devicenum, projectnum, mLongitude + "", mLatitude + "", mAddressStr);
                         } else {
-                            showErrorDialog("监测点编号登记失败", equipment_chenckin);
+                            showErrorDialog("登记失败，请重新登记！", equipment_chenckin);
                         }
                     } else {
+//                        String writeEpc = DeviceTools.getDeviceToolsInstance().readEPC();
+//                        if (writeEpc.equals(inputEpc)) {
+//                            // 直接写入本地数据库
+//                            insertEquipmentDataBase(areanum, devicenum, projectnum, mLongitude + "", mLatitude + "", mAddressStr);
+//                        } else {
+//                            showErrorDialog("登记失败，请重新登记！", equipment_chenckin);
+//                        }
                         // 直接写入本地数据库
                         if (finalWriteEPCState == 0) {
+                            successWrite = inputEpc;
                             insertEquipmentDataBase(areanum, devicenum, projectnum,
                                     mLongitude + "", mLatitude + "", mAddressStr);
                         } else {
-                            ShowToast.getInstance().show("写入失败，请离标签近点再次尝试写入", 0);
+                            ShowToast.getInstance().show("写入失败，请离标签近点再次尝试写入" + finalWriteEPCState,
+                                    0);
                         }
-
                     }
                 }
             }, 1000);
@@ -582,9 +604,10 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                         NewDeviceTools.wirteMessage(inputEpc);
                     } else {
                         writeEPCState = DeviceTools.getDeviceToolsInstance(getApplicationContext())
-                                .writeEPC(inputEpc);
+                                .writeEPC(readEpc, inputEpc);
                     }
                     final int finalWriteEPCState = writeEPCState;
+                    Log.d("ZM", "写卡: " + finalWriteEPCState);
                     equipment_chenckin.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -599,13 +622,15 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                                 }
                             } else {
                                 // 直接写入本地数据库
+//                                insertEquipmentDataBase(areanum, devicenum, projectnum, longitude, latitude, mAddressStr);
+                                // 直接写入本地数据库
                                 if (finalWriteEPCState == 0) {
+                                    successWrite = inputEpc;
                                     insertEquipmentDataBase(areanum, devicenum, projectnum, longitude,
                                             latitude, mAddressStr);
                                 } else {
-                                    ShowToast.getInstance().show("写入失败，请离标签近点再次尝试写入", 0);
+                                    ShowToast.getInstance().show("写入失败，请离标签近点再次尝试写入" + finalWriteEPCState, 0);
                                 }
-
                             }
                         }
                     }, 1000);
@@ -627,9 +652,9 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
         bean.setEquipmentUploadState("未上传");
         bean.setEquipmentProjectId(project);
         bean.setEquipmentId(areanum + project + device);
-        bean.setEquipmentLatitude(latitude);
-        bean.setEquipmentLongitude(longitude);
-        bean.setEquipmentLocation(location);
+        bean.setEquipmentLatitude(TextUtils.isEmpty(latitude) ? "" : latitude);
+        bean.setEquipmentLongitude(TextUtils.isEmpty(longitude) ? "" : longitude);
+        bean.setEquipmentLocation(TextUtils.isEmpty(location) ? "" : location);
         dataHelper.insertEquipmentData(bean);
         equipment_chenckin.postDelayed(new Runnable() {
             @Override
@@ -702,4 +727,10 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        DeviceTools.getDeviceToolsInstance(getApplicationContext()).JiaoYanStop();
+        finish();
+    }
 }

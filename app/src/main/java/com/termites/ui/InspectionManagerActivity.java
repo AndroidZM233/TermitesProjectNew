@@ -14,10 +14,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.platform.comapi.map.M;
+import com.speedata.libuhf.IUHFService;
+import com.speedata.libuhf.bean.SpdReadData;
+import com.speedata.libuhf.interfaces.OnSpdReadListener;
+import com.speedata.libuhf.utils.StringUtils;
 import com.termites.R;
 import com.termites.tools.EmptyViewListView;
 import com.termites.tools.ShowToast;
+import com.termites.tools.Tools;
 import com.termites.tools.adapter.InspectionManagerAdapter;
 import com.termites.tools.config.LocalcacherConfig;
 import com.termites.tools.config.MethodConfig;
@@ -28,10 +35,12 @@ import com.termites.tools.rfid.DeviceTools;
 import com.termites.tools.rfid.NewDeviceTools;
 import com.termites.ui.base.BaseWithTitleBackActivity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import static com.termites.tools.rfid.DeviceTools.IsPlayAudio;
+
 /**
- * 巡检管理
  * Created by LF on 16/10/20.
  */
 
@@ -47,22 +56,79 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
     private MyThread myThread;
     private boolean isStart = false;
     private volatile boolean isLongClick = false;
+    private IUHFService iuhfService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_inspection_manager);
 
-//        if (LocalcacherConfig.isCloseTest) {
-//            if (LocalcacherConfig.isUseNewDeviceCode) {
-//                NewDeviceTools.initNative();
-//            } else {
-//                DeviceTools.getDeviceToolsInstance(getApplicationContext()).openReader();
-//            }
-//        }
+        if (LocalcacherConfig.isCloseTest) {
+            if (LocalcacherConfig.isUseNewDeviceCode) {
+                NewDeviceTools.initNative();
+            } else {
+                DeviceTools.getDeviceToolsInstance(getApplicationContext()).openReader();
+            }
+        }
         dataHelper = new DataHelper(this);
 
         initView();
+
+//        iuhfService = OurApplication.mReader;
+//        iuhfService.setOnReadListener(new OnSpdReadListener() {
+//            @Override
+//            public void getReadData(SpdReadData var1) {
+//                int status = var1.getStatus();
+//                if (status == 0) {
+//                    byte[] epcData = var1.getEPCData();
+//                    String hexString = StringUtils.byteToHexString(epcData, var1.getEPCLen());
+//                    String hexStringToString = null;
+//                    try {
+//                        hexStringToString = Tools.hexStringToString(hexString);
+//                    } catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    }
+//                    if (TextUtils.isEmpty(hexStringToString)) {
+//                        hexStringToString = "dekan";
+//                    }
+//                    byte[] spdata = var1.getReadData();
+//                    if (hexString.equalsIgnoreCase("E200680B0000000000000000") || spdata == null) {
+//                        Message msg = new Message();
+//                        msg.arg1 = 0x2;
+//                        myHandler.sendMessage(msg);
+//                        Log.d("ZM", "handler发送02");
+//                        return;
+//                    }
+//                    EpcStatusBean epcStatusBean = new EpcStatusBean();
+//
+//                    //判断高位是否为1
+//                    if ((byte) (spdata[0] & 0x80) == (byte) 0x80) {
+//                        if (IsPlayAudio) {
+//                            DeviceTools.getDeviceToolsInstance(getApplicationContext())
+//                                    .playerAudio2(getApplicationContext());
+//                        }
+//                        epcStatusBean.setState("无");
+//                    } else {
+//                        if (IsPlayAudio) {
+//                            DeviceTools.getDeviceToolsInstance(getApplicationContext())
+//                                    .playerAudio1(getApplicationContext());
+//                        }
+//                        epcStatusBean.setState("有");
+//                    }
+//                    epcStatusBean.setCurrentEpc(hexStringToString);
+//                    Message msg = new Message();
+//                    msg.arg1 = 0x1;
+//                    msg.obj = epcStatusBean;
+//                    myHandler.sendMessage(msg);
+//                    Log.d("ZM", "handler发送01");
+//                }else {
+//                    Message msg = new Message();
+//                    msg.arg1 = 0x2;
+//                    myHandler.sendMessage(msg);
+//                    Log.d("ZM", "handler发送02");
+//                }
+//            }
+//        });
     }
 
     private void initView() {
@@ -85,22 +151,10 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                 if (!isLongClick) {
                     isLongClick = true;
                     Log.d("ZM", "长按 isLongClick:" + isLongClick);
-//                    if (myThread != null) {
-//                        myThread = null;
-//                        // 暂停巡检
-//                        if (LocalcacherConfig.isCloseTest) {
-//                            if (LocalcacherConfig.isUseNewDeviceCode) {
-//                                NewDeviceTools.stopReadMessage();
-//                            } else {
-//                                DeviceTools.getDeviceToolsInstance(getApplicationContext()).pauseReaderEPC();
-//                            }
-//                        }
-//                    }
-
                     inspection_bottom_text.setText("停止巡检");
                     inspection_bottom_start_rl.setBackgroundColor(getResources().getColor(R.color.text_red));
                     DeviceTools.getDeviceToolsInstance(getApplicationContext())
-                            .longClickStatus(myHandler,true);
+                            .longClickStatus(myHandler, true);
                 }
                 return true;
             }
@@ -113,6 +167,10 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
     @Override
     public void onClickTitleRightTxt(TextView mTextView) {
         super.onClickTitleRightTxt(mTextView);
+        if (isLongClick) {
+            isLongClick = false;
+            DeviceTools.getDeviceToolsInstance(getApplicationContext()).longClickStop();
+        }
         pauseReaderEPC();
         Intent intent = new Intent(getActivity(), EquipmentOrInspectionHistoryRecordActivity.class);
         intent.putExtra(LocalcacherConfig.KEY_HistoryRecordType, "inspection");
@@ -126,19 +184,15 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                 if (inspection_bottom_text.getText().toString().equals("开始巡检")) {
                     inspection_bottom_text.setText("停止巡检");
                     inspection_bottom_start_rl.setBackgroundColor(getResources().getColor(R.color.text_red));
-
                     Log.d("ZM", "单次Click开始");
                     if (LocalcacherConfig.isCloseTest) {
                         if (LocalcacherConfig.isUseNewDeviceCode) {
                             NewDeviceTools.readMessage(mHandler);
                         } else {
                             // 开始巡检
-//                            if (myThread == null) {
-//                                myThread = new MyThread();
-//                                myThread.start();
-//                            }
                             DeviceTools.getDeviceToolsInstance(getApplicationContext())
-                                    .longClickStatus(myHandler,false);
+                                    .longClickStatus(myHandler, false);
+//                            readArea();
                         }
                     } else {
                         InspectionBean bean = new InspectionBean();
@@ -162,15 +216,18 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                     if (isLongClick) {
                         isLongClick = false;
                         DeviceTools.getDeviceToolsInstance(getApplicationContext()).longClickStop();
-//                        DeviceTools.getDeviceToolsInstance(getApplicationContext()).pauseReaderEPC();
                     }
                     pauseReaderEPC();
                     inspection_bottom_text.setText("开始巡检");
                     inspection_bottom_start_rl.setBackgroundColor(getResources().getColor(R.color.text_green));
                 }
                 break;
-
             case R.id.check_bottom_text:
+                if (isLongClick) {
+                    isLongClick = false;
+                    DeviceTools.getDeviceToolsInstance(getApplicationContext()).longClickStop();
+                }
+                pauseReaderEPC();
                 CheckDialog checkDialog = new CheckDialog(this);
                 checkDialog.setTitle("查找");
                 checkDialog.setCancelable(false);
@@ -181,11 +238,23 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
         }
     }
 
+    private void readArea() {
+        iuhfService.newReadArea(1, 32, 1, "00000000");
+    }
+
     class MyThread extends Thread {
         @Override
         public void run() {
-//            DeviceTools.getDeviceToolsInstance(getApplicationContext())
-//                    .readEPCStatus(myHandler);
+//            EpcStatusBean epcStatusBean = DeviceTools.getDeviceToolsInstance().readEPCStatus(getActivity());
+//            if (epcStatusBean != null && !TextUtils.isEmpty(epcStatusBean.getCurrentEpc())) {
+//                Message msg = new Message();
+//                msg.arg1 = 0x1;
+//                msg.obj = epcStatusBean;
+//                myHandler.sendMessage(msg);
+//            } else {
+//                pauseReaderEPC();
+//                ShowToast.getInstance().show("监测装置未发现", 0);
+//            }
         }
     }
 
@@ -206,13 +275,10 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                 bean.setInspectionTime(MethodConfig.getSystemTime());
                 // 巡检到一条数据就往数据库存一条数据
                 insertInspectionData(bean);
-                // 巡检到数据暂停巡检
                 if (!isLongClick) {
                     pauseReaderEPC();
                     Log.d("ZM", "handleMessage: 01短按");
                 } else {
-//                    DeviceTools.getDeviceToolsInstance(getApplicationContext())
-//                            .readEPCStatus(myHandler);
                     Log.d("ZM", "handleMessage: 01长按继续巡检");
                 }
             } else if (msg.arg1 == 0x2) {
@@ -221,8 +287,6 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                     ShowToast.getInstance().show("读取EPC的状态失败,请重新!", 0);
                     Log.d("ZM", "handleMessage: 02短按");
                 } else {
-//                    DeviceTools.getDeviceToolsInstance(getApplicationContext())
-//                            .readEPCStatus(myHandler);
                     ShowToast.getInstance().show("读取EPC的状态失败", 0);
                     Log.d("ZM", "handleMessage: 02长按继续巡检");
                 }
@@ -266,13 +330,12 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
 //        if (myThread != null) {
 //            myThread = null;
 //        }
-        // 暂停巡检
+//        // 暂停巡检
 //        if (LocalcacherConfig.isCloseTest) {
 //            if (LocalcacherConfig.isUseNewDeviceCode) {
 //                NewDeviceTools.stopReadMessage();
 //            } else {
-////                DeviceTools.getDeviceToolsInstance(getApplicationContext()).pauseReaderEPC();
-//                DeviceTools.getDeviceToolsInstance(getApplicationContext()).longClickStop();
+//                DeviceTools.getDeviceToolsInstance().pauseReaderEPC();
 //            }
 //        }
         inspection_bottom_start_rl.postDelayed(new Runnable() {
@@ -284,43 +347,50 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
         }, 500);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (LocalcacherConfig.isCloseTest) {
-            if (LocalcacherConfig.isUseNewDeviceCode) {
-                NewDeviceTools.stopReadMessage();
-            } else {
-                DeviceTools.getDeviceToolsInstance(getApplicationContext()).closeReader();
-            }
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (LocalcacherConfig.isCloseTest) {
-            if (LocalcacherConfig.isUseNewDeviceCode) {
-                NewDeviceTools.open();
-            } else {
-                DeviceTools.getDeviceToolsInstance(getApplicationContext()).openReader();
-            }
-        }
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (LocalcacherConfig.isCloseTest) {
+//            if (LocalcacherConfig.isUseNewDeviceCode) {
+//                NewDeviceTools.stopReadMessage();
+//            } else {
+//                DeviceTools.getDeviceToolsInstance().closeReader();
+//            }
+//        }
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (LocalcacherConfig.isCloseTest) {
+//            if (LocalcacherConfig.isUseNewDeviceCode) {
+//                NewDeviceTools.open();
+//            } else {
+//                DeviceTools.getDeviceToolsInstance().getReader();
+//            }
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         dataHelper.close();
-//        if (LocalcacherConfig.isCloseTest) {
-//            if (LocalcacherConfig.isUseNewDeviceCode) {
-//                NewDeviceTools.destory();
-//            } else {
-//                DeviceTools.getDeviceToolsInstance(getApplicationContext()).closeReader();
-//            }
-//        }
+
         if (myThread != null) {
             myThread = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DeviceTools.getDeviceToolsInstance(getApplicationContext()).longClickStop();
+        if (LocalcacherConfig.isCloseTest) {
+            if (LocalcacherConfig.isUseNewDeviceCode) {
+                NewDeviceTools.destory();
+            } else {
+                DeviceTools.getDeviceToolsInstance(getApplicationContext()).closeReader();
+            }
         }
     }
 
@@ -332,7 +402,7 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
         }
         if (keyCode == 24) {
             if (LocalcacherConfig.isCloseTest) {
-                if (DeviceTools.IsPlayAudio) {
+                if (IsPlayAudio) {
                     DeviceTools.getDeviceToolsInstance(getApplicationContext())
                             .playerAudio(getActivity());
                 }
@@ -341,5 +411,11 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
