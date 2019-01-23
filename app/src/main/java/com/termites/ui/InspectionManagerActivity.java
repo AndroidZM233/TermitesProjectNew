@@ -58,11 +58,10 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
     private volatile boolean isLongClick = false;
     private IUHFService iuhfService;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_inspection_manager);
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (LocalcacherConfig.isCloseTest) {
             if (LocalcacherConfig.isUseNewDeviceCode) {
                 NewDeviceTools.initNative();
@@ -70,6 +69,12 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                 DeviceTools.getDeviceToolsInstance(getApplicationContext()).openReader();
             }
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_inspection_manager);
         dataHelper = new DataHelper(this);
 
         initView();

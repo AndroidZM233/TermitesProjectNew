@@ -278,6 +278,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                             mOffline.pause(mCityID);
                         }
                     }
+
                 }
                 break;
                 case MKOfflineMap.TYPE_NEW_OFFLINE:
@@ -452,24 +453,13 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                 }
                 break;
             case R.id.equipment_data_downloadmap:
-                if (!MethodConfig.isNetWorkAvailables(getActivity())) {
-                    return;
+                if (showTwoButton == null) {
+                    showTwoButton = new PopWindowShowTwoButton(getActivity());
+                    showTwoButton.setBtnCancelText("取消");
+                    showTwoButton.setBtnSureText("确定");
+                    showTwoButton.setOnClickListener(downMap);
                 }
-                mCityID = searchCity(mAddressStr);
-                if (TextUtils.isEmpty(mAddressStr)) {
-                    toast("当前定位失败,无法下载离线地图", 0);
-                    return;
-                }
-                if (localMapList.size() > 0) {
-                    for (int i = 0; i < localMapList.size(); i++) {
-                        if (mCityID == localMapList.get(i).cityID) {
-                            toast("当前省份的离线地图包已经下载过了", 0);
-                            return;
-                        }
-                    }
-                }
-                // 根据当前获取到的城市去下载对应的离线地图包,如果没有对应的城市离线地图,则下载全国基础包
-                mOffline.start(mCityID);
+                showTwoButton.show("是否下载离线数据包？", equipment_data_downloadmap, Gravity.CENTER);
                 break;
             case R.id.forgethandpwd_sure:
                 alertDialogShowTwoButton.dismissPop();
@@ -480,6 +470,39 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                 break;
         }
     }
+
+    View.OnClickListener downMap = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.forgethandpwd_sure:
+                    if (!MethodConfig.isNetWorkAvailables(getActivity())) {
+                        return;
+                    }
+                    mCityID = searchCity(mAddressStr);
+                    if (TextUtils.isEmpty(mAddressStr)) {
+                        toast("当前定位失败,无法下载离线地图", 0);
+                        return;
+                    }
+                    if (localMapList.size() > 0) {
+                        for (int i = 0; i < localMapList.size(); i++) {
+                            if (mCityID == localMapList.get(i).cityID) {
+                                toast("当前省份的离线地图包已经下载过了", 0);
+                                return;
+                            }
+                        }
+                    }
+                    // 根据当前获取到的城市去下载对应的离线地图包,如果没有对应的城市离线地图,则下载全国基础包
+                    mOffline.start(mCityID);
+                    break;
+                case R.id.forgethandpwd_cancel:
+                    showTwoButton.dismissPop();
+                    break;
+
+            }
+        }
+    };
+
 
     Handler myHandler = new Handler() {
         @Override
@@ -517,7 +540,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
         final String projectnum = equipment_project_num.getText().toString();
         // 对监测点编号进行拼接
         final String inputEpc = areanum + projectnum + devicenum;
-        if (!TextUtils.isEmpty(readEpc)) {
+        if (!TextUtils.isEmpty(readEpc) && !readEpc.equalsIgnoreCase("E200680B0000000000000000")) {
             if (inputEpc.equals(readEpc)) {
                 showErrorDialog(inputEpc + "与装置中的监测点编号相同,请重新输入", equipment_chenckin);
             } else {
@@ -528,11 +551,11 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                     showTwoButton.setBtnSureText("确定");
                     showTwoButton.setOnClickListener(onClickListener_showTwoButton);
                 }
-                if (readEpc.equalsIgnoreCase("E200680B0000000000000000")) {
-                    showTwoButton.show("当前装置中的监测点编号为: " + "未登记" + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
-                } else {
-                    showTwoButton.show("当前装置中的监测点编号为: " + readEpc + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
-                }
+//                if (readEpc.equalsIgnoreCase("E200680B0000000000000000")) {
+//                    showTwoButton.show("当前装置中的监测点编号为: " + "未登记" + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
+//                } else {
+                showTwoButton.show("当前装置中的监测点编号为: " + readEpc + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
+//                }
 
             }
         } else {
