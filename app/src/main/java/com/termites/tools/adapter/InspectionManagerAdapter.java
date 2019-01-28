@@ -49,7 +49,7 @@ public class InspectionManagerAdapter extends CommonAdapter<InspectionBean> {
         inspection_equipment_num = vh.getView(R.id.inspection_equipment_num);
         inspection_termites_state = vh.getView(R.id.inspection_termites_state);
 
-        int textColor = inspectionBean.getInspectionTermiteState().equals("有") ?
+        int textColor = inspectionBean.getInspectionTermiteState().equals(mContext.getString(R.string.have)) ?
                 R.color.text_red : R.color.black;
 
         vh.setText(inspection_num, inspectionBean.getShowId() + "")

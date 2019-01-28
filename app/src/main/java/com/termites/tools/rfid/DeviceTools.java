@@ -9,6 +9,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.termites.R;
 import com.termites.tools.Tools;
 import com.speedata.libuhf.IUHFService;
 import com.termites.tools.ShowToast;
@@ -424,17 +425,17 @@ public class DeviceTools {
                         if (IsPlayAudio) {
                             this.playerAudio2(context);
                         }
-                        epcStatusBean.setState("无");
+                        epcStatusBean.setState(mContext.getString(R.string.no_have));
                     } else {
                         if (IsPlayAudio) {
                             this.playerAudio1(context);
                         }
-                        epcStatusBean.setState("有");
+                        epcStatusBean.setState(mContext.getString(R.string.have));
                     }
 
                     if (currentEPC.equalsIgnoreCase("E200680B0000000000000000")
                             || TextUtils.isEmpty(currentEPC)) {
-                        epcStatusBean.setCurrentEpc("未登记");
+                        epcStatusBean.setCurrentEpc(mContext.getString(R.string.unregistered));
                     } else {
                         String hexStringToString = Tools.hexStringToString(currentEPC);
                         epcStatusBean.setCurrentEpc(hexStringToString);
@@ -505,16 +506,16 @@ public class DeviceTools {
                         if (IsPlayAudio) {
                             this.playerAudio2(context);
                         }
-                        epcStatusBean.setState("无");
+                        epcStatusBean.setState(mContext.getString(R.string.no_have));
                     } else {
                         if (IsPlayAudio) {
                             this.playerAudio1(context);
                         }
-                        epcStatusBean.setState("有");
+                        epcStatusBean.setState(mContext.getString(R.string.have));
                     }
                     if (currentEPC.equalsIgnoreCase("E200680B0000000000000000")
                             || TextUtils.isEmpty(currentEPC)) {
-                        epcStatusBean.setCurrentEpc("未登记");
+                        epcStatusBean.setCurrentEpc(mContext.getString(R.string.unregistered));
                     } else {
                         String hexStringToString = Tools.hexStringToString(currentEPC);
                         epcStatusBean.setCurrentEpc(hexStringToString);
@@ -564,7 +565,7 @@ public class DeviceTools {
             mediaPlayer1.prepare();
             mediaPlayer1.start();
         } catch (Exception e) {
-            ShowToast.getInstance().show("音频文件播放异常", 0);
+            ShowToast.getInstance().show(mContext.getString(R.string.voice_error), 0);
         }
 
     }
@@ -586,7 +587,7 @@ public class DeviceTools {
             mediaPlayer2.prepare();
             mediaPlayer2.start();
         } catch (Exception e) {
-            ShowToast.getInstance().show("音频文件播放异常", 0);
+            ShowToast.getInstance().show(mContext.getString(R.string.voice_error2), 0);
         }
     }
 
@@ -610,7 +611,7 @@ public class DeviceTools {
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (Exception e) {
-            ShowToast.getInstance().show("音频文件播放异常", 0);
+            ShowToast.getInstance().show(mContext.getString(R.string.voice_error2), 0);
         }
     }
 

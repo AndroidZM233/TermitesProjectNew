@@ -40,21 +40,21 @@ public class EquipmentOrInspectionHistoryRecordAdapter extends CommonAdapter<His
         history_record_latitude = vh.getView(R.id.history_record_latitude);
 
         if (mType.equals("checkin")) {
-            vh.setText(history_record_numer, "监测点编号: " + historyRecordBean.getEquipmentId() + "")
-                    .setText(history_record_idorstate, "项目编号: " + historyRecordBean.getEquipmentProjectId())
-                    .setText(history_record_time, "登记时间: " + historyRecordBean.getEquipmentCheckTime().replace("%20", " "));
+            vh.setText(history_record_numer, mContext.getString(R.string.checkin_adapter1) + historyRecordBean.getEquipmentId() + "")
+                    .setText(history_record_idorstate, mContext.getString(R.string.checkin_adapter2) + historyRecordBean.getEquipmentProjectId())
+                    .setText(history_record_time, mContext.getString(R.string.checkin_adapter3) + historyRecordBean.getEquipmentCheckTime().replace("%20", " "));
             vh.setVisibility_TextView(history_record_longitude, View.VISIBLE)
                     .setVisibility_TextView(history_record_latitude, View.VISIBLE)
-                    .setText(history_record_longitude, "经       度: " + Double.parseDouble(historyRecordBean.getEquipmentLongitude()))
-                    .setText(history_record_latitude, "纬       度: " + Double.parseDouble(historyRecordBean.getEquipmentLatitude()));
+                    .setText(history_record_longitude, mContext.getString(R.string.checkin_adapter4) + Double.parseDouble(historyRecordBean.getEquipmentLongitude()))
+                    .setText(history_record_latitude, mContext.getString(R.string.checkin_adapter5) + Double.parseDouble(historyRecordBean.getEquipmentLatitude()));
         } else if (mType.equals("inspection")) {
-            vh.setText(history_record_numer, "监测装置编号: " + historyRecordBean.getInspecId() + "")
-                    .setText(history_record_idorstate, "白蚁状态: " + historyRecordBean.getInspectionTermiteState())
-                    .setText(history_record_time, "巡检时间: " + historyRecordBean.getInspectionTime().replace("%20", " "));
+            vh.setText(history_record_numer, mContext.getString(R.string.ins_adapter1) + historyRecordBean.getInspecId() + "")
+                    .setText(history_record_idorstate, mContext.getString(R.string.ins_adapter2)+ historyRecordBean.getInspectionTermiteState())
+                    .setText(history_record_time, mContext.getString(R.string.ins_adapter3) + historyRecordBean.getInspectionTime().replace("%20", " "));
             vh.setVisibility_TextView(history_record_longitude, View.GONE)
                     .setVisibility_TextView(history_record_latitude, View.GONE);
         }
-        vh.setText(R.id.history_record_uploadstate, "上传状态: " + historyRecordBean.getUploadState());
+        vh.setText(R.id.history_record_uploadstate, mContext.getString(R.string.ins_adapter4) + historyRecordBean.getUploadState());
 
     }
 }

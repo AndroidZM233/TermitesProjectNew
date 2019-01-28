@@ -110,13 +110,13 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
     }
 
     private void initView() {
-        setTitleTxt("装置登记");
-        setTitleRightTxt("查询");
+        setTitleTxt(getString(R.string.device_registration));
+        setTitleRightTxt(getString(R.string.inquiry));
         setTitleRightTextVisility(View.VISIBLE);
 
         equipment_area_num = $_Act(R.id.equipment_area_num);
         equipment_area_num.setText(TextUtils.isEmpty(LocalcacherConfig.getCustomAreaCode()) ?
-                "未同步到地区编号" : LocalcacherConfig.getCustomAreaCode());
+                getString(R.string.no_area_id) : LocalcacherConfig.getCustomAreaCode());
 
         equipment_device_num = $_Act(R.id.equipment_device_num);
         equipment_device_num_clear = $_Act(R.id.equipment_device_num_clear);
@@ -270,10 +270,10 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                     MKOLUpdateElement update = mOffline.getUpdateInfo(state);
                     // 处理下载进度更新提示
                     if (update != null) {
-                        showProgress("离线地图包下载中,请稍等..." + update.ratio + "%");
+                        showProgress(getString(R.string.down_maping) + update.ratio + "%");
                         if (update.ratio - 100 >= 0) {
                             hideProgress();
-                            toast("离线地图下载完成", R.drawable.toast_icon_suc);
+                            toast(getString(R.string.down_map_success), R.drawable.toast_icon_suc);
                             updateOfflineMap();
                             mOffline.pause(mCityID);
                         }
@@ -288,11 +288,11 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                 case MKOfflineMap.TYPE_VER_UPDATE:
                     if (alertDialogShowTwoButton == null) {
                         alertDialogShowTwoButton = new PopWindowShowTwoButton(getActivity());
-                        alertDialogShowTwoButton.setBtnCancelText("取消");
-                        alertDialogShowTwoButton.setBtnSureText("确定");
+                        alertDialogShowTwoButton.setBtnCancelText(getString(R.string.cancel));
+                        alertDialogShowTwoButton.setBtnSureText(getString(R.string.sure));
                         alertDialogShowTwoButton.setOnClickListener(EquipmentCheckInActivity.this);
                     }
-                    alertDialogShowTwoButton.show("离线地图包版本更新了,是否下载新的离线地图包?", state, equipment_data_downloadmap, Gravity.CENTER);
+                    alertDialogShowTwoButton.show(getString(R.string.down_new_map), state, equipment_data_downloadmap, Gravity.CENTER);
                     break;
             }
         }
@@ -308,11 +308,11 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
         public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
             mAddressStr = reverseGeoCodeResult.getAddress();
             if (TextUtils.isEmpty(mAddressStr)) {
-                toast("定位失败,请检查网络或GPS是否已打开", 0);
+                toast(getString(R.string.locate_failed), 0);
                 return;
             }
             if (!mAddressStr.equals(reverseGeoCodeResult.getAddress())) {
-                toast("当前位置: " + mAddressStr, 0);
+                toast(getString(R.string.locate) + mAddressStr, 0);
             }
         }
     };
@@ -355,41 +355,41 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                 final String areanum = equipment_area_num.getText().toString();
                 String devicenum = equipment_device_num.getText().toString();
                 String projectnum = equipment_project_num.getText().toString();
-                if (areanum.contains("未同步到地区编号")) {
-                    toast("请在登录界面进行数据同步");
+                if (areanum.contains(getString(R.string.no_area_id))) {
+                    toast(getString(R.string.error1));
                     return;
                 }
                 if (TextUtils.isEmpty(projectnum)) {
-                    toast("请输入项目编号");
+                    toast(getString(R.string.error2));
                     return;
                 }
                 if (!isNums(projectnum)) {
-                    toast("项目编号格式不正确");
+                    toast(getString(R.string.error3));
                     return;
                 }
                 if (TextUtils.isEmpty(devicenum)) {
-                    toast("请输入监测点编号");
+                    toast(getString(R.string.error4));
                     return;
                 }
                 if (!isNums(projectnum)) {
-                    toast("监测点编号格式不正确");
+                    toast(getString(R.string.error5));
                     return;
                 }
                 if (mLongitude == 0.0d) {
-                    toast("请打开地图进行定位");
+                    toast(getString(R.string.error6));
                     return;
                 }
                 if (mLatitude == 0.0d) {
-                    toast("请打开地图进行定位");
+                    toast(getString(R.string.error6));
                     return;
                 }
                 //判断位数是否有效不足补0
                 if (projectnum.length() > 4) {
-                    toast("项目编号不能超过4位数字");
+                    toast(getString(R.string.error7));
                     return;
                 }
                 if (devicenum.length() > 3) {
-                    toast("监测点编号不能超过3位数字");
+                    toast(getString(R.string.error8));
                     return;
                 }
                 if (projectnum.length() < 4) {
@@ -413,7 +413,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
 
                 if (LocalcacherConfig.isCloseTest) {
                     if (LocalcacherConfig.isUseNewDeviceCode) {
-                        showProgress("正在检测数据,请稍后...");
+                        showProgress(getString(R.string.checking_data));
                         NewDeviceTools.readMessage(mHandler);
                     } else {
                         // 先读取监测点装置的编号
@@ -441,9 +441,9 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
 //                    DeviceTools.getDeviceToolsInstance().pauseReaderEPC();
 
                     if (TextUtils.isEmpty(successWrite)) {
-                        toast("请先登记");
+                        toast(getString(R.string.please_login));
                     } else {
-                        showProgress("正在校验数据,请稍后...");
+                        showProgress(getString(R.string.check_data));
                         DeviceTools.getDeviceToolsInstance(getApplicationContext())
                                 .JiaoYanStart(myHandler, successWrite);
                     }
@@ -455,11 +455,11 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
             case R.id.equipment_data_downloadmap:
                 if (showTwoButton == null) {
                     showTwoButton = new PopWindowShowTwoButton(getActivity());
-                    showTwoButton.setBtnCancelText("取消");
-                    showTwoButton.setBtnSureText("确定");
+                    showTwoButton.setBtnCancelText(getString(R.string.cancel));
+                    showTwoButton.setBtnSureText(getString(R.string.sure));
                     showTwoButton.setOnClickListener(downMap);
                 }
-                showTwoButton.show("是否下载离线数据包？", equipment_data_downloadmap, Gravity.CENTER);
+                showTwoButton.show(getString(R.string.if_download), equipment_data_downloadmap, Gravity.CENTER);
                 break;
             case R.id.forgethandpwd_sure:
                 alertDialogShowTwoButton.dismissPop();
@@ -481,13 +481,13 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                     }
                     mCityID = searchCity(mAddressStr);
                     if (TextUtils.isEmpty(mAddressStr)) {
-                        toast("当前定位失败,无法下载离线地图", 0);
+                        toast(getString(R.string.cannt_download), 0);
                         return;
                     }
                     if (localMapList.size() > 0) {
                         for (int i = 0; i < localMapList.size(); i++) {
                             if (mCityID == localMapList.get(i).cityID) {
-                                toast("当前省份的离线地图包已经下载过了", 0);
+                                toast(getString(R.string.download), 0);
                                 return;
                             }
                         }
@@ -512,13 +512,13 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
             if (msg.arg1 == 0x1) {
                 EpcStatusBean epcStatusBean = (EpcStatusBean) msg.obj;
                 if (epcStatusBean != null) {
-                    showErrorDialog("当前监测点编号: " + epcStatusBean.getCurrentEpc() +
-                            "\n白蚁状态: " + epcStatusBean.getState(), equipment_check);
+                    showErrorDialog(getString(R.string.error_dialog1) + epcStatusBean.getCurrentEpc() +
+                            "\n" + getString(R.string.error_dialog2) + epcStatusBean.getState(), equipment_check);
                 } else {
-                    toast("校验失败,请重试!");
+                    toast(getString(R.string.error_dialog3));
                 }
             } else if (msg.arg1 == 0x2) {
-                ShowToast.getInstance().show("读取EPC的状态失败,请重新!", 0);
+                ShowToast.getInstance().show(getString(R.string.read_failed), 0);
             }
             DeviceTools.getDeviceToolsInstance(getApplicationContext()).pauseReaderEPC();
         }
@@ -542,24 +542,24 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
         final String inputEpc = areanum + projectnum + devicenum;
         if (!TextUtils.isEmpty(readEpc) && !readEpc.equalsIgnoreCase("E200680B0000000000000000")) {
             if (inputEpc.equals(readEpc)) {
-                showErrorDialog(inputEpc + "与装置中的监测点编号相同,请重新输入", equipment_chenckin);
+                showErrorDialog(inputEpc + getString(R.string.error_dialog4), equipment_chenckin);
             } else {
                 // 如果不相等,提示用户是否重新写入新的监测点编号
                 if (showTwoButton == null) {
                     showTwoButton = new PopWindowShowTwoButton(getActivity());
-                    showTwoButton.setBtnCancelText("取消");
-                    showTwoButton.setBtnSureText("确定");
+                    showTwoButton.setBtnCancelText(getString(R.string.cancel));
+                    showTwoButton.setBtnSureText(getString(R.string.sure));
                     showTwoButton.setOnClickListener(onClickListener_showTwoButton);
                 }
 //                if (readEpc.equalsIgnoreCase("E200680B0000000000000000")) {
 //                    showTwoButton.show("当前装置中的监测点编号为: " + "未登记" + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
 //                } else {
-                showTwoButton.show("当前装置中的监测点编号为: " + readEpc + "\n" + "是否需要重新登记监测点编号?", equipment_chenckin, Gravity.CENTER);
+                showTwoButton.show(getString(R.string.error_dialog5) + readEpc + "\n" + getString(R.string.error_dialog6), equipment_chenckin, Gravity.CENTER);
 //                }
 
             }
         } else {
-            showProgress("正在登记装置数据,请稍后...");
+            showProgress(getString(R.string.error_dialog7));
             // 向监测点装置写入监测点的编号
             // 如果写入成功则保存本地数据库,写入失败则不保存
             final String writeEPC = "";
@@ -581,7 +581,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                             // 直接写入本地数据库
                             insertEquipmentDataBase(areanum, devicenum, projectnum, mLongitude + "", mLatitude + "", mAddressStr);
                         } else {
-                            showErrorDialog("登记失败，请重新登记！", equipment_chenckin);
+                            showErrorDialog(getString(R.string.error_dialog8), equipment_chenckin);
                         }
                     } else {
 //                        String writeEpc = DeviceTools.getDeviceToolsInstance().readEPC();
@@ -597,7 +597,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                             insertEquipmentDataBase(areanum, devicenum, projectnum,
                                     mLongitude + "", mLatitude + "", mAddressStr);
                         } else {
-                            ShowToast.getInstance().show("写入失败，请离标签近点再次尝试写入" + finalWriteEPCState,
+                            ShowToast.getInstance().show(getString(R.string.error_dialog9) + finalWriteEPCState,
                                     0);
                         }
                     }
@@ -618,7 +618,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
             switch (v.getId()) {
                 case R.id.forgethandpwd_sure:
                     showTwoButton.dismissPop();
-                    showProgress("正在登记装置数据,请稍后...");
+                    showProgress(getString(R.string.error_dialog7));
                     // 向监测点装置写入监测点的编号
                     // 如果写入成功则保存本地数据库,写入失败则不保存
                     final String writeEPC = "";
@@ -641,7 +641,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                                     // 直接写入本地数据库
                                     insertEquipmentDataBase(areanum, devicenum, projectnum, longitude, latitude, mAddressStr);
                                 } else {
-                                    showErrorDialog("监测点编号登记失败", equipment_chenckin);
+                                    showErrorDialog(getString(R.string.error_dialog10), equipment_chenckin);
                                 }
                             } else {
                                 // 直接写入本地数据库
@@ -652,7 +652,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
                                     insertEquipmentDataBase(areanum, devicenum, projectnum, longitude,
                                             latitude, mAddressStr);
                                 } else {
-                                    ShowToast.getInstance().show("写入失败，请离标签近点再次尝试写入" + finalWriteEPCState, 0);
+                                    ShowToast.getInstance().show(getString(R.string.error_dialog11) + finalWriteEPCState, 0);
                                 }
                             }
                         }
@@ -682,7 +682,7 @@ public class EquipmentCheckInActivity extends BaseWithTitleBackActivity implemen
         equipment_chenckin.postDelayed(new Runnable() {
             @Override
             public void run() {
-                toast("数据登记成功", R.drawable.toast_icon_suc);
+                toast(getString(R.string.dengji_success), R.drawable.toast_icon_suc);
                 // 对监测点编号自动加1
                 int len = device.length();
                 if (isNums(device)) {

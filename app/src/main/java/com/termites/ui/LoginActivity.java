@@ -63,7 +63,7 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
 
     private void initView() {
 
-        setTitleTxt("用户登录");
+        setTitleTxt(getString(R.string.login_title));
         setTitleBackTextVisility(View.GONE);
 
         // 设备编号
@@ -110,7 +110,7 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
         if (LocalcacherConfig.isCloseTest) {
             // 获取缓存中的设备编号,如果没有显示提示信息
             String deviceNumber = MethodConfig.loadFile();
-            login_equipment_number.setText(TextUtils.isEmpty(deviceNumber) ? "提示: 请先登记本机" : deviceNumber);
+            login_equipment_number.setText(TextUtils.isEmpty(deviceNumber) ? getString(R.string.toast_login_device) : deviceNumber);
         } else {
             login_equipment_number.setText("13578");
         }
@@ -156,20 +156,20 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
                     String equipment_number = login_equipment_number.getText().toString();
                     String account = login_account.getText().toString();
                     String pwd = login_pwd.getText().toString();
-                    if (equipment_number.contains("提示")) {
-                        toast("请先登记本机");
+                    if (equipment_number.contains(getString(R.string.tishi))) {
+                        toast(getString(R.string.please_device));
                         return;
                     }
                     if (TextUtils.isEmpty(account)) {
-                        toast("请输入账号");
+                        toast(getString(R.string.please_user));
                         return;
                     }
                     if (TextUtils.isEmpty(pwd)) {
-                        toast("请输入密码");
+                        toast(getString(R.string.please_pwd));
                         return;
                     }
                     if (TextUtils.isEmpty(LocalcacherConfig.getCustomAreaCode()) || LocalcacherConfig.getCustomId() == 0) {
-                        toast("请先同步数据");
+                        toast(getString(R.string.please_sync));
                         return;
                     }
 
@@ -184,13 +184,13 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
                                     CustomBean.Admins admins = adminsList.get(i);
                                     if (account.equals(admins.getName()) &&
                                             SecuritUtil.md5(pwd).equals(admins.getPassword())) {
-                                        toast("登录成功", R.drawable.toast_icon_suc);
+                                        toast(getString(R.string.login_success), R.drawable.toast_icon_suc);
                                         startActivity(new Intent(getActivity(), MainActivity.class));
                                         finish();
                                         return;
                                     }
                                 }
-                                toast("登录失败,请检查账号或密码是否正确");
+                                toast(getString(R.string.login_failed));
                             }
                         }
                     }
@@ -207,8 +207,8 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
             case R.id.login_register_sycndata:
                 setRepeat(login_register_sycndata);
                 ShowInputMethodManager.hideSoftInput(login_register_sycndata);
-                if (login_equipment_number.getText().toString().contains("提示")) {
-                    toast("请先登记本机");
+                if (login_equipment_number.getText().toString().contains(getString(R.string.tishi))) {
+                    toast(getString(R.string.please_device));
                     return;
                 }
                 // 数据同步
@@ -219,7 +219,7 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
 
     // 登录接口
     public void submitLoginData(String device, final String name, final String pwd) {
-        showProgress("正在登录,请稍后...");
+        showProgress(getString(R.string.loging));
         new Login(getActivity(), device, name, pwd, new Login.SuccessCallback() {
             @Override
             public void onSuccess(NetConnectionBean bean) {
@@ -227,7 +227,7 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
                 if (bean.isError()) {
                     toast(bean.getMessage());
                 } else {
-                    toast("登录成功", R.drawable.toast_icon_suc);
+                    toast(getString(R.string.login_success), R.drawable.toast_icon_suc);
                     // 缓存登录成功后的账号和密码
                     LocalcacherConfig.cacheUserName(name);
                     LocalcacherConfig.cacheUserPwd(pwd);
@@ -239,7 +239,7 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
             @Override
             public void onFail() {
                 hideProgress();
-                toast("登录失败,请稍后再试");
+                toast(getString(R.string.login_failed2));
             }
         });
     }
@@ -253,20 +253,20 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
     }
 
     public void SycnData() {
-        showProgress("正在同步数据,请稍后...");
+        showProgress(getString(R.string.syncing));
         String device = login_equipment_number.getText().toString();
         new DataSync(getActivity(), device, new DataSync.SuccessCallback() {
 
             @Override
             public void onSuccess() {
                 hideProgress();
-                toast("数据同步成功", R.drawable.toast_icon_suc);
+                toast(getString(R.string.sync_success), R.drawable.toast_icon_suc);
             }
         }, new DataSync.FailCallback() {
 
             @Override
             public void onFail() {
-                toast("数据同步失败");
+                toast(getString(R.string.sync_failed));
                 hideProgress();
             }
         });
@@ -280,7 +280,7 @@ public class LoginActivity extends BaseWithTitleBackActivity implements View.OnC
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {// 是实体返回键并且已经点击
             if ((System.currentTimeMillis() - exitTime) > 2000) {// 间隔时间
                 // 自定义Toast
-                toast("再按一次退出程序", 0);
+                toast(getString(R.string.back_toast), 0);
                 exitTime = System.currentTimeMillis();
             } else {
                 ActivityManagerDone.finishAllActivities();

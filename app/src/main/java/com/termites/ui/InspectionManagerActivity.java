@@ -137,12 +137,12 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
     }
 
     private void initView() {
-        setTitleTxt("巡检管理");
-        setTitleRightTxt("查询");
+        setTitleTxt(getString(R.string.inspection_management));
+        setTitleRightTxt(getString(R.string.inquiry));
         setTitleRightTextVisility(View.VISIBLE);
 
         inspection_lv = $_Act(R.id.inspection_lv);
-        inspection_lv.setEmptyView(MethodConfig.getEmptyViewWithText(this, "暂无巡检数据", R.drawable.emptydata_inspection_icon_2));
+        inspection_lv.setEmptyView(MethodConfig.getEmptyViewWithText(this, getString(R.string.no_data), R.drawable.emptydata_inspection_icon_2));
         mInspectionManagerAdapter = new InspectionManagerAdapter(getActivity());
         inspection_lv.setAdapter(mInspectionManagerAdapter);
 
@@ -156,7 +156,7 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                 if (!isLongClick) {
                     isLongClick = true;
                     Log.d("ZM", "长按 isLongClick:" + isLongClick);
-                    inspection_bottom_text.setText("停止巡检");
+                    inspection_bottom_text.setText(R.string.stop_inspecting);
                     inspection_bottom_start_rl.setBackgroundColor(getResources().getColor(R.color.text_red));
                     DeviceTools.getDeviceToolsInstance(getApplicationContext())
                             .longClickStatus(myHandler, true);
@@ -186,8 +186,8 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.inspection_bottom_start_rl:
-                if (inspection_bottom_text.getText().toString().equals("开始巡检")) {
-                    inspection_bottom_text.setText("停止巡检");
+                if (inspection_bottom_text.getText().toString().equals(getString(R.string.start_inspecting))) {
+                    inspection_bottom_text.setText(R.string.stop_inspecting);
                     inspection_bottom_start_rl.setBackgroundColor(getResources().getColor(R.color.text_red));
                     Log.d("ZM", "单次Click开始");
                     if (LocalcacherConfig.isCloseTest) {
@@ -216,14 +216,14 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                         // 巡检到一条数据就往数据库存一条数据
                         insertInspectionData(bean);
                     }
-                } else if (inspection_bottom_text.getText().toString().equals("停止巡检")) {
+                } else if (inspection_bottom_text.getText().toString().equals(getString(R.string.stop_inspecting))) {
                     Log.d("ZM", "单次Click停止 isLongClick:" + isLongClick);
                     if (isLongClick) {
                         isLongClick = false;
                         DeviceTools.getDeviceToolsInstance(getApplicationContext()).longClickStop();
                     }
                     pauseReaderEPC();
-                    inspection_bottom_text.setText("开始巡检");
+                    inspection_bottom_text.setText(R.string.start_inspecting);
                     inspection_bottom_start_rl.setBackgroundColor(getResources().getColor(R.color.text_green));
                 }
                 break;
@@ -234,7 +234,7 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                 }
                 pauseReaderEPC();
                 CheckDialog checkDialog = new CheckDialog(this);
-                checkDialog.setTitle("查找");
+                checkDialog.setTitle(R.string.search);
                 checkDialog.setCancelable(false);
                 checkDialog.show();
                 break;
@@ -276,7 +276,7 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
                 bean.setInspectionTermiteState(epcStatusBean.getState());
                 bean.setInspecId(epcStatusBean.getCurrentEpc());
                 bean.setShowId(mInspectionManagerAdapter.getCount() + 1);
-                bean.setInspectionUploadState("未上传");
+                bean.setInspectionUploadState(getString(R.string.no_upload));
                 bean.setInspectionTime(MethodConfig.getSystemTime());
                 // 巡检到一条数据就往数据库存一条数据
                 insertInspectionData(bean);
@@ -289,10 +289,10 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
             } else if (msg.arg1 == 0x2) {
                 if (!isLongClick) {
                     pauseReaderEPC();
-                    ShowToast.getInstance().show("读取EPC的状态失败,请重新!", 0);
+                    ShowToast.getInstance().show(getString(R.string.read_failed), 0);
                     Log.d("ZM", "handleMessage: 02短按");
                 } else {
-                    ShowToast.getInstance().show("读取EPC的状态失败", 0);
+                    ShowToast.getInstance().show(getString(R.string.read_failed_no), 0);
                     Log.d("ZM", "handleMessage: 02长按继续巡检");
                 }
             }
@@ -305,10 +305,10 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
             super.handleMessage(msg);
             Log.w(NewDeviceTools.LogTag, "巡检数据: " + msg.obj.toString());
             InspectionBean bean = new InspectionBean();
-            bean.setInspectionTermiteState("白蚁状态");
-            bean.setInspecId("当前检测点编号");
+            bean.setInspectionTermiteState(getString(R.string.status));
+            bean.setInspecId(getString(R.string.check_id));
             bean.setShowId(mInspectionManagerAdapter.getCount() + 1);
-            bean.setInspectionUploadState("未上传");
+            bean.setInspectionUploadState(getString(R.string.no_upload));
             bean.setInspectionTime(MethodConfig.getSystemTime());
             // 巡检到一条数据就往数据库存一条数据
 //            insertInspectionData(bean);
@@ -346,7 +346,7 @@ public class InspectionManagerActivity extends BaseWithTitleBackActivity impleme
         inspection_bottom_start_rl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                inspection_bottom_text.setText("开始巡检");
+                inspection_bottom_text.setText(R.string.start_inspecting);
                 inspection_bottom_start_rl.setBackgroundColor(getResources().getColor(R.color.text_green));
             }
         }, 500);

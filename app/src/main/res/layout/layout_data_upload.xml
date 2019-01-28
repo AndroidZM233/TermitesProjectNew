@@ -30,7 +30,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingLeft="20dp"
-                    android:text="登记数据"
+                    android:text="@string/data_registration"
                     android:textColor="@color/text_green"
                     android:textSize="@dimen/text_normal_size" />
 
@@ -42,7 +42,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingLeft="20dp"
-                    android:text="巡检数据"
+                    android:text="@string/data_inspection"
                     android:textColor="@color/text_gray"
                     android:textSize="@dimen/text_normal_size" />
             </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="7dp"
                     android:layout_toRightOf="@id/data_upload_checkmap_icon"
-                    android:text="查看地图"
+                    android:text="@string/view_map"
                     android:textColor="@color/text_gray"
                     android:textSize="@dimen/text_normal_size" />
 
@@ -118,7 +118,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="7dp"
                     android:layout_toRightOf="@id/data_upload_submit_icon"
-                    android:text="上传数据"
+                    android:text="@string/data_upload2"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_normal_size" />
 

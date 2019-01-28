@@ -48,7 +48,7 @@
                 android:layout_below="@id/btv_home_page"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="首页"
+                android:text="@string/home"
                 android:textSize="13dp" />
         </RelativeLayout>
 
@@ -75,7 +75,7 @@
                 android:layout_below="@id/btv_more"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="更多"
+                android:text="@string/more"
                 android:textSize="13dp" />
         </RelativeLayout>
     </LinearLayout>

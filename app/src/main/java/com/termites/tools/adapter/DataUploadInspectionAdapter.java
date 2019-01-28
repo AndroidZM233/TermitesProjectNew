@@ -56,9 +56,9 @@ public class DataUploadInspectionAdapter extends CommonAdapter<InspectionBean> {
 
     @Override
     public void convert(CommonViewHolder vh, InspectionBean dataUploadLvBean, int position) {
-        vh.setText(R.id.dataupload_lv_id, "监测装置编号: " + dataUploadLvBean.getInspecId())
-                .setText(R.id.dataupload_lv_idorstate, "白蚁状态: " + dataUploadLvBean.getInspectionTermiteState())
-                .setText(R.id.dataupload_lv_time, "巡检时间: " + dataUploadLvBean.getInspectionTime().replace("%20", " "))
+        vh.setText(R.id.dataupload_lv_id, mContext.getString(R.string.ins_adapter1) + dataUploadLvBean.getInspecId())
+                .setText(R.id.dataupload_lv_idorstate, mContext.getString(R.string.ins_adapter2) + dataUploadLvBean.getInspectionTermiteState())
+                .setText(R.id.dataupload_lv_time, mContext.getString(R.string.ins_adapter3) + dataUploadLvBean.getInspectionTime().replace("%20", " "))
                 .setVisibility_TextView(R.id.dataupload_lv_longitude, View.GONE)
                 .setVisibility_TextView(R.id.dataupload_lv_latitude, View.GONE);
 

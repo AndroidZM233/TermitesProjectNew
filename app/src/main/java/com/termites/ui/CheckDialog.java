@@ -70,7 +70,7 @@ public class CheckDialog extends Dialog implements View.OnClickListener {
             case R.id.btn_check_start:
                 final String toString = mTvId.getText().toString();
                 if (TextUtils.isEmpty(toString)) {
-                    Toast.makeText(mContext, "监测装置编号不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.check_id_no_null, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mBtnCheckStart.setVisibility(View.GONE);

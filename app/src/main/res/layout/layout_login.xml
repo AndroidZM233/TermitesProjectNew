@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="手持仪编号 "
+                        android:text="@string/device_number"
                         android:textColor="@color/text_gray"
                         android:textSize="@dimen/text_normal_size" />
 
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="用户名 "
+                        android:text="@string/user_name"
                         android:textColor="@color/text_gray"
                         android:textSize="@dimen/text_normal_size" />
 
@@ -89,7 +89,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@color/white"
                         android:gravity="center_vertical"
-                        android:hint="请输入用户名"
+                        android:hint="@string/user_hint"
                         android:maxLength="12"
                         android:paddingBottom="10dp"
                         android:paddingLeft="30dp"
@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="密    码 "
+                        android:text="@string/pwd"
                         android:textColor="@color/text_gray"
                         android:textSize="@dimen/text_normal_size" />
 
@@ -137,7 +137,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@color/white"
                         android:gravity="center_vertical"
-                        android:hint="请输入密码"
+                        android:hint="@string/pwd_hint"
                         android:maxLength="12"
                         android:paddingBottom="10dp"
                         android:paddingLeft="30dp"
@@ -181,7 +181,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/bg_greenbtn"
-                android:text="登 录"
+                android:text="@string/login"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal_size" />
 
@@ -194,7 +194,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/bg_bluebtn"
-                android:text="登记本机"
+                android:text="@string/login_device"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal_size" />
 
@@ -224,7 +224,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="7dp"
                     android:layout_toRightOf="@id/sycndata_icon"
-                    android:text="数据同步"
+                    android:text="@string/sync_data"
                     android:textColor="@color/text_green"
                     android:textSize="@dimen/text_normal_size" />
 

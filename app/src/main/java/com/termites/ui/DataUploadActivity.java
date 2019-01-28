@@ -100,7 +100,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
     }
 
     private void initView() {
-        setTitleTxt("数据上传");
+        setTitleTxt(getString(R.string.data_upload2));
         setTitleRightTwoTextVisility(View.VISIBLE);
         setTitleRightTextVisility(View.VISIBLE);
         setTitleLeftTextVisility(View.VISIBLE);
@@ -216,7 +216,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
         View mView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_dataupload_checkdata_view, null);
         set_$_View(mView);
         mCheckInLv = $_View(R.id.dataupload_checkdata_lv);
-        mCheckInLv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), "暂无未上传的登记数据", R.drawable.emptydata_checkin_icon));
+        mCheckInLv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), getString(R.string.no_upload_data), R.drawable.emptydata_checkin_icon));
         mCheckInLv.setOnItemClickListener(onItemClickListener_CheckIn);
         mCheckInAdapter = new DataUploadCheckInAdapter(getActivity());
         mCheckInLv.setAdapter(mCheckInAdapter);
@@ -232,7 +232,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
         View mView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_dataupload_inspectiondata_view, null);
         set_$_View(mView);
         mInspectionLv = $_View(R.id.dataupload_inspectiondata_lv);
-        mInspectionLv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), "暂无未上传的巡检数据", R.drawable.emptydata_insepction_icon));
+        mInspectionLv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), getString(R.string.no_upload_xunjian), R.drawable.emptydata_insepction_icon));
         mInspectionLv.setOnItemClickListener(onItemClickListener_Inspection);
         mInspectionAdapter = new DataUploadInspectionAdapter(getActivity());
         mInspectionLv.setAdapter(mInspectionAdapter);
@@ -250,7 +250,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
         if (equipmentBeanList.size() > 0) {
             mCheckInAdapter.clear();
             mCheckInAdapter.addAll(equipmentBeanList);
-            setTitleRightTxt("编辑");
+            setTitleRightTxt(getString(R.string.edit));
         } else {
             mCheckInAdapter.clear();
             setTitleRightTxt("");
@@ -265,7 +265,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
         if (inspectionBeanList.size() > 0) {
             mInspectionAdapter.clear();
             mInspectionAdapter.addAll(inspectionBeanList);
-            setTitleRightTxt("编辑");
+            setTitleRightTxt(getString(R.string.edit));
         } else {
             mInspectionAdapter.clear();
             setTitleRightTxt("");
@@ -279,20 +279,20 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
         if (data_upload_vp.getCurrentItem() == 0) {
             // 处于编辑模式
             if (mCheckInAdapter.getOpenEditModal()) {
-                if (mTextView.getText().toString().equals("全选")) {
+                if (mTextView.getText().toString().equals(getString(R.string.check_all))) {
                     for (int i = 0; i < mCheckInAdapter.getCount(); i++) {
                         mCheckInAdapter.getSelected().put(i, true);
                     }
                     mCheckInLv_checkNum = mCheckInAdapter.getCount();
-                    setTitleRightTxt("取消全选");
-                } else if (mTextView.getText().toString().equals("取消全选")) {
+                    setTitleRightTxt(getString(R.string.deselect_all));
+                } else if (mTextView.getText().toString().equals(getString(R.string.deselect_all))) {
                     for (int i = 0; i < mCheckInAdapter.getCount(); i++) {
                         mCheckInAdapter.getSelected().put(i, false);
                     }
                     mCheckInLv_checkNum = 0;
-                    setTitleRightTxt("全选");
+                    setTitleRightTxt(getString(R.string.check_all));
                 }
-                setTitleLeftText("已选" + mCheckInLv_checkNum);
+                setTitleLeftText(getString(R.string.selected) + mCheckInLv_checkNum);
                 mCheckInAdapter.notifyDataSetChanged();
             }
             // 不处于编辑模式
@@ -306,11 +306,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                     mCheckInAdapter.getSelected().put(i, false);
                 }
                 mCheckInLv_checkNum = 0;
-                setTitleLeftText("已选0");
+                setTitleLeftText(getString(R.string.selected)+"0");
                 setTitleBackIcon(R.drawable.left_close);
                 setTitleRightTwoTextVisility(View.VISIBLE);
-                setTitleRightTwoTxt("删除");
-                setTitleRightTxt("全选");
+                setTitleRightTwoTxt(getString(R.string.delete));
+                setTitleRightTxt(getString(R.string.check_all));
                 startTabAnimation(true);
                 data_upload_bottom_rl.setVisibility(View.VISIBLE);
                 data_upload_tab_checkdata.setEnabled(false);
@@ -321,20 +321,20 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
         } else if (data_upload_vp.getCurrentItem() == 1) {
             // 处于编辑模式
             if (mInspectionAdapter.getOpenEditModal()) {
-                if (mTextView.getText().toString().equals("全选")) {
+                if (mTextView.getText().toString().equals(getString(R.string.check_all))) {
                     for (int i = 0; i < mInspectionAdapter.getCount(); i++) {
                         mInspectionAdapter.getSelected().put(i, true);
                     }
                     mInspectionLv_checkNum = mInspectionAdapter.getCount();
-                    setTitleRightTxt("取消全选");
-                } else if (mTextView.getText().toString().equals("取消全选")) {
+                    setTitleRightTxt(getString(R.string.deselect_all));
+                } else if (mTextView.getText().toString().equals(getString(R.string.deselect_all))) {
                     for (int i = 0; i < mInspectionAdapter.getCount(); i++) {
                         mInspectionAdapter.getSelected().put(i, false);
                     }
                     mInspectionLv_checkNum = 0;
-                    setTitleRightTxt("全选");
+                    setTitleRightTxt(getString(R.string.check_all));
                 }
-                setTitleLeftText("已选" + mInspectionLv_checkNum);
+                setTitleLeftText(getString(R.string.selected) + mInspectionLv_checkNum);
                 mInspectionAdapter.notifyDataSetChanged();
             }
             // 不处于编辑模式
@@ -348,11 +348,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                     mInspectionAdapter.getSelected().put(i, false);
                 }
                 mInspectionLv_checkNum = 0;
-                setTitleLeftText("已选0");
+                setTitleLeftText(getString(R.string.selected)+"0");
                 setTitleBackIcon(R.drawable.left_close);
                 setTitleRightTwoTextVisility(View.VISIBLE);
-                setTitleRightTwoTxt("删除");
-                setTitleRightTxt("全选");
+                setTitleRightTwoTxt(getString(R.string.delete));
+                setTitleRightTxt(getString(R.string.check_all));
                 startTabAnimation(true);
                 data_upload_bottom_rl.setVisibility(View.VISIBLE);
                 data_upload_tab_checkdata.setEnabled(false);
@@ -382,7 +382,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 for (int i = 0; i < mCheckInAdapter.getSelected().size(); i++) {
                     mCheckInAdapter.getSelected().put(i, false);
                 }
-                setTitleRightTxt(mCheckInAdapter.getCount() > 0 ? "编辑" : "");
+                setTitleRightTxt(mCheckInAdapter.getCount() > 0 ? getString(R.string.edit) : "");
                 mCheckInLv_checkNum = 0;
             } else {
                 super.onClickTitleBack(mLinearLayout);
@@ -406,7 +406,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                     mInspectionAdapter.getSelected().put(i, false);
                 }
                 mInspectionLv_checkNum = 0;
-                setTitleRightTxt(mCheckInAdapter.getCount() > 0 ? "编辑" : "");
+                setTitleRightTxt(mCheckInAdapter.getCount() > 0 ? getString(R.string.edit) : "");
             } else {
                 super.onClickTitleBack(mLinearLayout);
             }
@@ -430,7 +430,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                                 dataHelper.deleteEquipmentOneData(bean);
                             }
                         }
-                        showProgress("删除数据中,请稍后...");
+                        showProgress(getString(R.string.deleteing));
                         mCheckInLv.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -448,7 +448,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                                 dataHelper.deleteInspectionOneData(mInspectionAdapter.getItem(i).getInspecId());
                             }
                         }
-                        showProgress("删除数据中,请稍后...");
+                        showProgress(getString(R.string.deleteing));
                         mInspectionLv.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -493,11 +493,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
         if (CheckSelectedLen > 0 || InspectionSelectedLen > 0) {
             if (alertDialogShowTwoButton == null) {
                 alertDialogShowTwoButton = new PopWindowShowTwoButton(getActivity());
-                alertDialogShowTwoButton.setBtnCancelText("取消");
-                alertDialogShowTwoButton.setBtnSureText("确定");
+                alertDialogShowTwoButton.setBtnCancelText(getString(R.string.cancel));
+                alertDialogShowTwoButton.setBtnSureText(getString(R.string.sure));
             }
             alertDialogShowTwoButton.setOnClickListener(deleteClickListener);
-            alertDialogShowTwoButton.show("确定删除该数据吗?", mTextView, Gravity.CENTER);
+            alertDialogShowTwoButton.show(getString(R.string.sure_delete), mTextView, Gravity.CENTER);
         }
     }
 
@@ -538,7 +538,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                         }
                     }
                     if (jsonArray.length() == 0) {
-                        toast("请选择上传的数据");
+                        toast(getString(R.string.select_upload));
                         return;
                     }
                     uploadCheckInData(jsonArray);
@@ -555,7 +555,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                                 InspectionBean bean = mInspectionAdapter.getItem(i);
 
                                 jsonObject.put(LocalcacherConfig.KEY_Device, bean.getInspecId());
-                                jsonObject.put(LocalcacherConfig.KEY_Status, bean.getInspectionTermiteState().equals("有") ? "1" : "0");
+                                jsonObject.put(LocalcacherConfig.KEY_Status, bean.getInspectionTermiteState().equals(getString(R.string.have)) ? "1" : "0");
                                 jsonObject.put(LocalcacherConfig.KEY_InspectionTime, bean.getInspectionTime());
                                 jsonObject.put(LocalcacherConfig.KEY_InspectionUser, LocalcacherConfig.getUserName() + "");
                                 jsonArray.put(jsonObject);
@@ -565,7 +565,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                         }
                     }
                     if (jsonArray.length() == 0) {
-                        toast("请选择上传的数据");
+                        toast(getString(R.string.select_upload));
                         return;
                     }
                     uploadInspectionData(jsonArray);
@@ -597,7 +597,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                         id = id.replace(",", "");
                     }
                     if (len == 0) {
-                        toast("请选择需要查看地图的数据");
+                        toast(getString(R.string.select_map));
                         return;
                     }
                     Intent intent = new Intent(getActivity(), MapViewActivity.class);
@@ -647,11 +647,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                     // 弹框提示
                     if (alertDialogShowTwoButton == null) {
                         alertDialogShowTwoButton = new PopWindowShowTwoButton(getActivity());
-                        alertDialogShowTwoButton.setBtnCancelText("取消");
-                        alertDialogShowTwoButton.setBtnSureText("确定");
+                        alertDialogShowTwoButton.setBtnCancelText(getString(R.string.cancel));
+                        alertDialogShowTwoButton.setBtnSureText(getString(R.string.sure));
                     }
                     alertDialogShowTwoButton.setOnClickListener(DataUploadActivity.this);
-                    alertDialogShowTwoButton.show("确定删除该数据吗?", position, mCheckInLv, Gravity.CENTER);
+                    alertDialogShowTwoButton.show(getString(R.string.sure_delete), position, mCheckInLv, Gravity.CENTER);
                     break;
             }
         }
@@ -686,11 +686,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                     // 弹框提示
                     if (alertDialogShowTwoButton == null) {
                         alertDialogShowTwoButton = new PopWindowShowTwoButton(getActivity());
-                        alertDialogShowTwoButton.setBtnCancelText("取消");
-                        alertDialogShowTwoButton.setBtnSureText("确定");
+                        alertDialogShowTwoButton.setBtnCancelText(getString(R.string.cancel));
+                        alertDialogShowTwoButton.setBtnSureText(getString(R.string.sure));
                     }
                     alertDialogShowTwoButton.setOnClickListener(DataUploadActivity.this);
-                    alertDialogShowTwoButton.show("确定删除该数据吗?", position, mInspectionLv, Gravity.CENTER);
+                    alertDialogShowTwoButton.show(getString(R.string.sure_delete), position, mInspectionLv, Gravity.CENTER);
                     break;
             }
         }
@@ -724,11 +724,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 mCheckInLv_checkNum++;
             }
             if (mCheckInLv_checkNum == mCheckInAdapter.getCount()) {
-                setTitleRightTxt("取消全选");
+                setTitleRightTxt(getString(R.string.deselect_all));
             } else {
-                setTitleRightTxt("全选");
+                setTitleRightTxt(getString(R.string.check_all));
             }
-            setTitleLeftText("已选" + mCheckInLv_checkNum);
+            setTitleLeftText(getString(R.string.selected) + mCheckInLv_checkNum);
             mCheckInAdapter.notifyDataSetChanged();
         } else {
             if (mInspectionAdapter.getSelected().get(position).booleanValue()) {
@@ -739,11 +739,11 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 mInspectionLv_checkNum++;
             }
             if (mInspectionLv_checkNum == mInspectionAdapter.getCount()) {
-                setTitleRightTxt("取消全选");
+                setTitleRightTxt(getString(R.string.deselect_all));
             } else {
-                setTitleRightTxt("全选");
+                setTitleRightTxt(getString(R.string.check_all));
             }
-            setTitleLeftText("已选" + mInspectionLv_checkNum);
+            setTitleLeftText(getString(R.string.selected) + mInspectionLv_checkNum);
             mInspectionAdapter.notifyDataSetChanged();
         }
 
@@ -751,7 +751,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
 
     // 装置登记数据上传
     public void uploadCheckInData(final JSONArray jsonArray) {
-        showProgress("数据上传中,请稍后...");
+        showProgress(getString(R.string.uploading));
         new UploadEquipmentData(getActivity(), jsonArray.length(), jsonArray, new UploadEquipmentData.SuccessCallback() {
 
             @Override
@@ -760,7 +760,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 if (bean.isError()) {
                     toast(bean.getMessage());
                 } else {
-                    toast("登记数据上传成功", R.drawable.toast_icon_suc);
+                    toast(getString(R.string.upload_success), R.drawable.toast_icon_suc);
                     updateCheckInData(jsonArray);
                     mCheckInLv.postDelayed(new Runnable() {
                         @Override
@@ -776,14 +776,14 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
             @Override
             public void onFail() {
                 hideProgress();
-                toast("登记数据上传失败");
+                toast(getString(R.string.upload_feild));
             }
         });
     }
 
     // 删除装置登记数据
     public void deleteCheckInOneData(EquipmentBean bean) {
-        showProgress("删除数据中,请稍后...");
+        showProgress(getString(R.string.deling));
         dataHelper.deleteEquipmentOneData(bean);
         mCheckInLv.postDelayed(new Runnable() {
             @Override
@@ -791,7 +791,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 getCheckInData();
                 hideProgress();
                 onClickTitleBack(getTitleBackView());
-                toast("数据删除成功", R.drawable.toast_icon_suc);
+                toast(getString(R.string.del_success), R.drawable.toast_icon_suc);
             }
         }, 1000);
     }
@@ -804,7 +804,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 EquipmentBean bean = new EquipmentBean();
                 bean.setEquipmentId(jsonObject.getString(LocalcacherConfig.KEY_Device));
                 bean.setEquipmentCheckTime(jsonObject.getString(LocalcacherConfig.KEY_EquipmentTime));
-                bean.setEquipmentUploadState("已上传");
+                bean.setEquipmentUploadState(getString(R.string.uploaded));
                 dataHelper.updateEpuipmentData(bean);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -815,7 +815,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
 
     //装置巡检数据上传
     public void uploadInspectionData(final JSONArray jsonArray) {
-        showProgress("数据上传中,请稍后...");
+        showProgress(getString(R.string.uploading));
         new UploadInspectionData(getActivity(), jsonArray.length(), jsonArray, new UploadInspectionData.SuccessCallback() {
 
             @Override
@@ -824,7 +824,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 if (bean.isError()) {
                     toast(bean.getMessage());
                 } else {
-                    toast("巡检数据上传成功", R.drawable.toast_icon_suc);
+                    toast(getString(R.string.xunjian_success), R.drawable.toast_icon_suc);
                     // 上传成功,删除掉对应的数据并重新查询数据库
                     deleteInspectionData(jsonArray);
                     mInspectionLv.postDelayed(new Runnable() {
@@ -841,7 +841,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
             @Override
             public void onFail() {
                 hideProgress();
-                toast("巡检数据上传失败");
+                toast(getString(R.string.xunjian_failed));
             }
         });
     }
@@ -861,7 +861,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
 
     // 删除某条巡检数据
     public void deleteInspectionOneData(String InspecId) {
-        showProgress("删除数据中,请稍后...");
+        showProgress(getString(R.string.deling));
         dataHelper.deleteInspectionOneData(InspecId);
         mInspectionLv.postDelayed(new Runnable() {
             @Override
@@ -869,7 +869,7 @@ public class DataUploadActivity extends BaseWithTitleBackActivity implements Vie
                 getInspectionData();
                 hideProgress();
                 onClickTitleBack(getTitleBackView());
-                toast("数据删除成功", R.drawable.toast_icon_suc);
+                toast(getString(R.string.del_success), R.drawable.toast_icon_suc);
             }
         }, 1000);
     }

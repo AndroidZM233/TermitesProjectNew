@@ -20,7 +20,7 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:hint="监测装置编号"
+            android:hint="@string/check_number"
             android:maxLength="12"
             android:paddingBottom="10dp"
             android:paddingLeft="30dp"
@@ -41,7 +41,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="20dp"
             android:background="@drawable/bg_greenbtn"
-            android:text="开始查找"
+            android:text="@string/start_search"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal_size" />
 
@@ -53,7 +53,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="20dp"
             android:background="@drawable/bg_redbtn"
-            android:text="停止查找"
+            android:text="@string/stop_seacrch"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal_size"
             android:visibility="gone" />
@@ -66,7 +66,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="20dp"
             android:background="@drawable/bg_greenbtn"
-            android:text="关闭"
+            android:text="@string/close_search"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal_size" />
     </LinearLayout>

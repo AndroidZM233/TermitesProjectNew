@@ -62,13 +62,13 @@ public class DataUploadCheckInAdapter extends CommonAdapter<EquipmentBean> {
         dataupload_lv_longitude = vh.getView(R.id.dataupload_lv_longitude);
         dataupload_lv_latitude = vh.getView(R.id.dataupload_lv_latitude);
 
-        vh.setText(R.id.dataupload_lv_id, "监测点编号: " + dataUploadLvBean.getEquipmentId())
-                .setText(R.id.dataupload_lv_idorstate, "项目编号: " + dataUploadLvBean.getEquipmentProjectId())
-                .setText(R.id.dataupload_lv_time, "登记时间: " + dataUploadLvBean.getEquipmentCheckTime().replace("%20", " "))
+        vh.setText(R.id.dataupload_lv_id, mContext.getString(R.string.checkin_adapter1) + dataUploadLvBean.getEquipmentId())
+                .setText(R.id.dataupload_lv_idorstate, mContext.getString(R.string.checkin_adapter2) + dataUploadLvBean.getEquipmentProjectId())
+                .setText(R.id.dataupload_lv_time, mContext.getString(R.string.checkin_adapter3) + dataUploadLvBean.getEquipmentCheckTime().replace("%20", " "))
                 .setVisibility_TextView(dataupload_lv_longitude, View.VISIBLE)
-                .setText(dataupload_lv_longitude, "经       度: " + Double.parseDouble(dataUploadLvBean.getEquipmentLongitude()))
+                .setText(dataupload_lv_longitude, mContext.getString(R.string.checkin_adapter4) + Double.parseDouble(dataUploadLvBean.getEquipmentLongitude()))
                 .setVisibility_TextView(dataupload_lv_latitude, View.VISIBLE)
-                .setText(dataupload_lv_latitude, "纬       度: " + Double.parseDouble(dataUploadLvBean.getEquipmentLatitude()));
+                .setText(dataupload_lv_latitude, mContext.getString(R.string.checkin_adapter5) + Double.parseDouble(dataUploadLvBean.getEquipmentLatitude()));
 
         dataupload_lv_check_cb = vh.getView(R.id.dataupload_lv_check_cb);
         if (IsOpenEditModal) {

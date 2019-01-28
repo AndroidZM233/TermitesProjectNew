@@ -49,7 +49,7 @@ public class CheckInMyDeviceActivity extends BaseWithTitleBackActivity implement
     }
 
     private void initView() {
-        setTitleTxt("登记本机");
+        setTitleTxt(getString(R.string.login_device));
 
         // 登记账号
         checkin_device_account = $_Act(R.id.checkin_device_account);
@@ -102,7 +102,7 @@ public class CheckInMyDeviceActivity extends BaseWithTitleBackActivity implement
     }
 
     public void submitData(final String name, final String pwd, final String device) {
-        showProgress("正在提交数据,请稍后...");
+        showProgress(getString(R.string.commiting));
         new Register(getActivity(), name, pwd, device, new Register.SuccessCallback() {
 
             @Override
@@ -113,7 +113,7 @@ public class CheckInMyDeviceActivity extends BaseWithTitleBackActivity implement
                         toast(bean.getMessage());
                     } else {
                         MethodConfig.saveFile(device.toString());
-                        toast("登记成功", R.drawable.toast_icon_suc);
+                        toast(getString(R.string.register_success), R.drawable.toast_icon_suc);
                         setResult(100, null);
                         finish();
                     }
@@ -124,7 +124,7 @@ public class CheckInMyDeviceActivity extends BaseWithTitleBackActivity implement
             @Override
             public void onFail() {
                 hideProgress();
-                toast("登记失败,请重试");
+                toast(getString(R.string.register_failed));
             }
         });
     }
@@ -173,19 +173,19 @@ public class CheckInMyDeviceActivity extends BaseWithTitleBackActivity implement
 
                 String account = checkin_device_account.getText().toString();
                 if (TextUtils.isEmpty(account)) {
-                    toast("请输入登记帐号");
+                    toast(getString(R.string.please_user));
                     return;
                 }
 
                 String pwd = checkin_device_pwd.getText().toString();
                 if (TextUtils.isEmpty(pwd)) {
-                    toast("请输入登记密码");
+                    toast(getString(R.string.please_pwd));
                     return;
                 }
 
                 String equipmentNumber = checkin_device_equipment_number.getText().toString();
                 if (TextUtils.isEmpty(equipmentNumber)) {
-                    toast("请输入设备编号");
+                    toast(getString(R.string.device_hint));
                     return;
                 }
                 submitData(account, pwd, equipmentNumber);

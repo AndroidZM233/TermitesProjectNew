@@ -41,13 +41,13 @@ public class EquipmentOrInspectionHistoryRecordActivity extends BaseWithTitleBac
         mType = getIntent().getStringExtra(LocalcacherConfig.KEY_HistoryRecordType);
         history_record_lv = $_Act(R.id.history_record_lv);
         if (mType.equals("checkin")) {
-            setTitleTxt("登记历史纪录");
+            setTitleTxt(getString(R.string.registration_history));
             history_record_lv.setSelector(R.drawable.bg_white_selector);
-            history_record_lv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), "暂无登记历史纪录", R.drawable.emptydata_checkin_icon));
+            history_record_lv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), getString(R.string.no_history1), R.drawable.emptydata_checkin_icon));
         } else if (mType.equals("inspection")) {
             history_record_lv.setSelector(android.R.color.transparent);
-            setTitleTxt("巡检历史纪录");
-            history_record_lv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), "暂无巡检历史纪录", R.drawable.emptydata_insepction_icon));
+            setTitleTxt(getString(R.string.inspection_history));
+            history_record_lv.setEmptyView(MethodConfig.getEmptyViewWithText(getActivity(), getString(R.string.no_history2), R.drawable.emptydata_insepction_icon));
         }
         history_record_lv.setOnItemClickListener(onItemClickListener);
         historyRecordAdapter = new EquipmentOrInspectionHistoryRecordAdapter(getActivity());
@@ -57,7 +57,7 @@ public class EquipmentOrInspectionHistoryRecordActivity extends BaseWithTitleBac
     }
 
     public void getData() {
-        showProgress("获取数据中,请稍后...");
+        showProgress(getString(R.string.get_data));
         if (mType.equals("checkin")) {
             // 查询本地数据
             List<EquipmentBean> equipmentBeanList = dataHelper.getEquipmentAllData(true);
@@ -141,7 +141,7 @@ public class EquipmentOrInspectionHistoryRecordActivity extends BaseWithTitleBac
                 equipmentBean.setEquipmentProjectId(historyRecordBean.getEquipmentProjectId());
                 equipmentBean.setEquipmentCheckTime(historyRecordBean.getEquipmentCheckTime());
                 equipmentBean.setEquipmentUploadState(historyRecordBean.getUploadState());
-                showProgress("数据修改中,请稍后...");
+                showProgress(getString(R.string.change_data));
                 dataHelper.updateEpuipmentData_LongitudeAndLatitude(equipmentBean);
                 history_record_lv.postDelayed(new Runnable() {
                     @Override

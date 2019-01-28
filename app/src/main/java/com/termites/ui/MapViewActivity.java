@@ -80,7 +80,7 @@ public class MapViewActivity extends BaseWithTitleBackActivity {
         String longitude = intent.getStringExtra(LocalcacherConfig.KEY_Longitude);
         String latitude = intent.getStringExtra(LocalcacherConfig.KEY_Latitude);
         String equipmentId = intent.getStringExtra(LocalcacherConfig.KEY_EquipmentId);
-        setTitleTxt("地图");
+        setTitleTxt(getString(R.string.map));
         iv_location = (ImageView) findViewById(R.id.iv_location);
         if (mIsHistoryData) {
             iv_location.setVisibility(View.GONE);
@@ -91,7 +91,7 @@ public class MapViewActivity extends BaseWithTitleBackActivity {
         dataHelper = new DataHelper(this);
         if (!mIsDataUpload) {
             setTitleRightTextVisility(View.VISIBLE);
-            setTitleRightTxt("确定");
+            setTitleRightTxt(getString(R.string.sure));
         }
 
         if (mIsDataUpload || mIsHistoryData) {
@@ -114,7 +114,7 @@ public class MapViewActivity extends BaseWithTitleBackActivity {
                         if (TextUtils.isEmpty(bean.getInspectionTermiteState())) {
                             mMapMarkIcon[i] = mGreenBitmap;
                         } else {
-                            mMapMarkIcon[i] = bean.getInspectionTermiteState().equals("有") ? mRedBitmap : mGreenBitmap;
+                            mMapMarkIcon[i] = bean.getInspectionTermiteState().equals(getString(R.string.have)) ? mRedBitmap : mGreenBitmap;
                         }
                     }
                 } else {
@@ -129,7 +129,7 @@ public class MapViewActivity extends BaseWithTitleBackActivity {
                     if (TextUtils.isEmpty(bean.getInspectionTermiteState())) {
                         mMapMarkIcon[0] = mGreenBitmap;
                     } else {
-                        mMapMarkIcon[0] = bean.getInspectionTermiteState().equals("有") ? mRedBitmap : mGreenBitmap;
+                        mMapMarkIcon[0] = bean.getInspectionTermiteState().equals(getString(R.string.have)) ? mRedBitmap : mGreenBitmap;
                     }
                 }
             }
@@ -202,7 +202,7 @@ public class MapViewActivity extends BaseWithTitleBackActivity {
                     textView.setTextColor(Color.BLACK);
                     textView.setPadding(20, 0, 20, 0);
                     textView.setHeight(70);
-                    textView.setText("监测点编号: " + markerBean.getEquipmentId());
+                    textView.setText(getString(R.string.check_id2) + markerBean.getEquipmentId());
                     InfoWindow.OnInfoWindowClickListener listener = new InfoWindow.OnInfoWindowClickListener() {
                         public void onInfoWindowClick() {
                             mBaiduMap.hideInfoWindow();

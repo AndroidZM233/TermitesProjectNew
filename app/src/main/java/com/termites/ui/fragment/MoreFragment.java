@@ -42,23 +42,24 @@ public class MoreFragment extends BaseWithTitleBackFragment implements AdapterVi
             R.drawable.more_clock,
             R.drawable.more_photo
     };
-    private String[] appNames = {
-            "相机",
-            "日历",
-            "计算器",
-            "手电筒",
-            "闹钟",
-            "相册"
-    };
+    private List<String> appNames = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        appNames.clear();
+        appNames.add(getString(R.string.camera));
+        appNames.add(getString(R.string.calendar));
+        appNames.add(getString(R.string.calculator));
+        appNames.add(getString(R.string.flashlight));
+        appNames.add(getString(R.string.clock));
+        appNames.add(getString(R.string.album));
+
         if (mMoreView == null) {
 
             mMoreView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_more_fg, null);
             initTitleWithBack(mMoreView);
-            setTitleTxt("辅助功能");
+            setTitleTxt(getString(R.string.auxiliary));
             setTitleBackTextVisility(View.GONE);
 
             mListView = $_View(R.id.more_fg_lv);
@@ -83,7 +84,7 @@ public class MoreFragment extends BaseWithTitleBackFragment implements AdapterVi
         List<AuxiliaryFunctionBean> auxiliaryFunctionBeanList = new ArrayList<>();
         for (int i = 0; i < iconSources.length; i++) {
             AuxiliaryFunctionBean auxiliaryFunctionBean = new AuxiliaryFunctionBean();
-            auxiliaryFunctionBean.setAppName(appNames[i]);
+            auxiliaryFunctionBean.setAppName(appNames.get(i));
             auxiliaryFunctionBean.setIconSource(iconSources[i]);
             auxiliaryFunctionBean.setAppType(i + 1);
             auxiliaryFunctionBeanList.add(auxiliaryFunctionBean);
@@ -131,7 +132,7 @@ public class MoreFragment extends BaseWithTitleBackFragment implements AdapterVi
 
     @Override
     public void onClick(View v) {
-        showProgress("正在注销账户,请稍后...");
+        showProgress(getString(R.string.close_account));
         more_cancelLationaccount.postDelayed(new Runnable() {
             @Override
             public void run() {

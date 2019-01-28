@@ -30,7 +30,7 @@ public class InitActivity extends BaseActivity {
 
 
         tv_version = $_Act(R.id.tv_version);
-        tv_version.setText("当前版本：" + GetEdition.getVersionName(this));
+        tv_version.setText(getString(R.string.version) + GetEdition.getVersionName(this));
         // 开启倒计时,这里后面做一些数据初始化或者,数据上传,同步之类的操作
         count = new MyCount(3000, 1000);
         count.start();

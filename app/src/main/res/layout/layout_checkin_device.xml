@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="登记账号"
+                        android:text="@string/register_user"
                         android:textColor="@color/text_gray"
                         android:textSize="@dimen/text_normal_size" />
 
@@ -48,7 +48,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@color/white"
                         android:gravity="center_vertical"
-                        android:hint="请输入账号"
+                        android:hint="@string/user_hint"
                         android:maxLength="12"
                         android:paddingBottom="10dp"
                         android:paddingLeft="27dp"
@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="登记密码"
+                        android:text="@string/register_pwd"
                         android:textColor="@color/text_gray"
                         android:textSize="@dimen/text_normal_size" />
 
@@ -96,11 +96,12 @@
                         android:layout_gravity="center_vertical"
                         android:background="@color/white"
                         android:gravity="center_vertical"
-                        android:hint="请输入密码"
+                        android:hint="@string/pwd_hint"
                         android:maxLength="12"
                         android:paddingBottom="10dp"
                         android:paddingLeft="27dp"
                         android:paddingRight="0dp"
+                        android:singleLine="true"
                         android:paddingTop="10dp"
                         android:password="true"
                         android:textColor="@color/black"
@@ -142,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="设备编号"
+                        android:text="@string/device_id"
                         android:textColor="@color/text_gray"
                         android:textSize="@dimen/text_normal_size" />
 
@@ -153,7 +154,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@color/white"
                         android:gravity="center_vertical"
-                        android:hint="请输入设备编号"
+                        android:hint="@string/device_hint"
                         android:maxLength="10"
                         android:paddingBottom="10dp"
                         android:paddingLeft="28dp"
@@ -190,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="机  器  码"
+                        android:text="@string/machine"
                         android:textColor="@color/text_gray"
                         android:textSize="@dimen/text_normal_size" />
 
@@ -226,7 +227,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/bg_greenbtn"
-                android:text="提 交"
+                android:text="@string/commit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_normal_size" />
 

@@ -38,7 +38,7 @@ public class HomePageFragment extends BaseWithTitleBackFragment implements Adapt
             mHomePageView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_homepage_fg, null);
 
             initTitleWithBack(mHomePageView);
-            setTitleTxt("首页");
+            setTitleTxt(getString(R.string.home));
             setTitleBackTextVisility(View.GONE);
 
             mMyGridView = $_View(R.id.homepage_gv);
@@ -61,15 +61,15 @@ public class HomePageFragment extends BaseWithTitleBackFragment implements Adapt
             HomePageGvBean mBean = new HomePageGvBean();
             if (i == 0) {
                 mBean.setJumpType(LocalcacherConfig.JumpTypes.KEY_InspectionManager);
-                mBean.setText("巡检管理");
+                mBean.setText(getString(R.string.inspection_management));
                 mBean.setIconSource(R.drawable.inspection_icon);
             } else if (i == 1) {
                 mBean.setJumpType(LocalcacherConfig.JumpTypes.KEY_EquipmentCheckin);
-                mBean.setText("装置登记");
+                mBean.setText(getString(R.string.device_registration));
                 mBean.setIconSource(R.drawable.checkin_icon);
             } else if (i == 2) {
                 mBean.setJumpType(LocalcacherConfig.JumpTypes.KEY_DataUpload);
-                mBean.setText("数据上传");
+                mBean.setText(getString(R.string.data_upload));
                 mBean.setIconSource(R.drawable.upload_icon);
             }
             mDatas.add(i, mBean);

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.MediaStore;
 
+import com.termites.R;
 import com.termites.tools.ShowToast;
 import com.termites.tools.config.LocalcacherConfig;
 import com.termites.tools.config.MethodConfig;
@@ -43,13 +44,13 @@ public class AuxiliaryFunctionTools {
     // 打开系统相机
     public static void openCamera(Activity mActivity) {
         if (!MethodConfig.checkCameraDevice(mActivity)) {
-            ShowToast.getInstance().show("抱歉,您摄像头功能不可用");
+            ShowToast.getInstance().show(mActivity.getString(R.string.camera_error1));
             return;
         }
 
         if (!LocalcacherConfig.isUseNewDeviceCode) {
             if (!MethodConfig.hardwareSupportCheck()) {
-                ShowToast.getInstance().show("请检查是否授权应用相机的权限");
+                ShowToast.getInstance().show(mActivity.getString(R.string.camera_error2));
                 return;
             }
         }
@@ -58,7 +59,7 @@ public class AuxiliaryFunctionTools {
             Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//调用android自带的照相机
             mActivity.startActivityForResult(openCameraIntent, CameraRequestCode);
         } catch (ActivityNotFoundException e) {
-            ShowToast.getInstance().show("抱歉,您摄像头功能不可用");
+            ShowToast.getInstance().show(mActivity.getString(R.string.camera_error3));
         }
     }
 
@@ -75,7 +76,7 @@ public class AuxiliaryFunctionTools {
             intent.setComponent(componentName);
             context.startActivity(intent);
         } catch (Exception e) {
-            ShowToast.getInstance().show("系统日历打开失败");
+            ShowToast.getInstance().show(context.getString(R.string.camera_error4));
         }
 
     }
@@ -87,7 +88,7 @@ public class AuxiliaryFunctionTools {
             mIntent.setClassName("com.android.calculator2", "com.android.calculator2.Calculator");
             context.startActivity(mIntent);
         } catch (Exception e) {
-            ShowToast.getInstance().show("系统计算器打开失败");
+            ShowToast.getInstance().show(context.getString(R.string.camera_error5));
         }
     }
 
@@ -151,7 +152,7 @@ public class AuxiliaryFunctionTools {
             intent.setComponent(new ComponentName(alarmPackageName, activityName));
             context.startActivity(intent);
         } else {
-            ShowToast.getInstance().show("系统闹钟打开失败");
+            ShowToast.getInstance().show(context.getString(R.string.camera_error6));
         }
     }
 
@@ -162,7 +163,7 @@ public class AuxiliaryFunctionTools {
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             ((Activity) context).startActivityForResult(intent, PhotoAlbumRequestCode);
         } catch (Exception e) {
-            ShowToast.getInstance().show("系统相册打开失败");
+            ShowToast.getInstance().show(context.getString(R.string.camera_error7));
         }
     }
 

@@ -25,7 +25,6 @@
             android:layout_below="@id/homepage_gv_img"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:maxLines="1"
             android:maxHeight="150dp"
             android:maxWidth="70dp"
             android:text="装置登记"

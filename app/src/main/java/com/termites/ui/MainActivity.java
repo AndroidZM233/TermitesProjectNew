@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {// 是实体返回键并且已经点击
             if ((System.currentTimeMillis() - exitTime) > 2000) {// 间隔时间
                 // 自定义Toast
-                toast("再按一次退出程序", 0);
+                toast(getString(R.string.back_toast), 0);
                 exitTime = System.currentTimeMillis();
             } else {
                 ActivityManagerDone.finishAllActivities();
