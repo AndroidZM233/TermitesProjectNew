@@ -30,7 +30,7 @@ public class DeviceTools {
     public static String LogTag = "DeviceTools";
 
     public static boolean IsPlayAudio = true;
-    private final static int MAX_COUNT = 10;
+    private final static int MAX_COUNT = 15;
     private static boolean IsReading = false;
     private static boolean ReadStatus = false;
     private static boolean SelectStatus = false;
@@ -56,16 +56,9 @@ public class DeviceTools {
             if (OurApplication.mReader == null) {
                 Log.d("ZM", "mReader == null");
                 OurApplication.getInstances().getmReader();
-//                OurApplication.mReader.OpenDev();
-//                int antennaPower = OurApplication.mReader.set_antenna_power(30);
-//                if (antennaPower == 0) {
-//                    ShowToast.getInstance().show("功率设置成功", 0);
-//                } else {
-//                    ShowToast.getInstance().show("功率设置失败", 0);
-//                }
             }
         } catch (Exception e) {
-//            ShowToast.getInstance().show("功率设置异常", 0);
+            e.printStackTrace();
         }
         return OurApplication.mReader;
     }
@@ -90,11 +83,9 @@ public class DeviceTools {
         try {
             reader = getReader();
             reader.select_card(1, "", false);
-            int maxCount = MAX_COUNT;
             int indexCount = 0;
-            while (indexCount < maxCount) {
-//                String readArea = reader.read_area(1, "2", "6", "00000000");
-                byte[] spdata = reader.read_area(1, 2, 6,
+            while (indexCount < MAX_COUNT) {
+                byte[] spdata = reader.read_area(1, 2, 8,
                         "00000000");
                 indexCount++;
                 if (spdata == null) {
@@ -104,6 +95,10 @@ public class DeviceTools {
                 String epc = null;
                 try {
                     String readArea = Tools.Bytes2HexString(spdata, spdata.length);
+                    String substring = readArea.substring(24);
+                    if (substring.equals("00000000")) {
+                        readArea = readArea.substring(0, 24);
+                    }
                     epc = Tools.hexStringToString(readArea);
                     if (readArea.equalsIgnoreCase("E200680B0000000000000000")) {
                         return readArea;
@@ -149,14 +144,12 @@ public class DeviceTools {
 
             int selectCard = reader.select_card(1, select, true);
             Log.d("ZM", "writeEPC: " + select + "--" + selectCard);
-            int maxCount = MAX_COUNT;
             int indexCount = 0;
-            while (indexCount < maxCount) {
-//                Thread.sleep(20);
+            while (indexCount < MAX_COUNT) {
                 indexCount++;
                 String toHexString = Tools.stringToHexString(Epc);
                 return reader.write_area(1, "2",
-                        "00000000", "6", toHexString);
+                        "00000000", toHexString.length() / 4 + "", toHexString);
             }
         } catch (Exception e) {
             ShowToast.getInstance().show("标签写入异常", 0);
@@ -171,37 +164,6 @@ public class DeviceTools {
         IsReading = false;
     }
 
-
-//    public void readEPCStatus(final Handler handler) {
-////        InventoryThread inventoryThread = new InventoryThread(handler);
-////        inventoryThread.start();
-//
-//        final IUHFService reader = getReader();
-//        reader.select_card(1, "", false);
-//        Log.d("ZM", "readEPCStatus: ");
-//        reader.setListener(new IUHFService.Listener() {
-//            @Override
-//            public void update(Tag_Data var1) {
-//                final String epc = var1.epc;
-//                Log.d("ZM", "盘点到数据: " + epc);
-//                if (!TextUtils.isEmpty(epc)) {
-//                    try {
-//                        if (Tools.hexStringToString(epc).length() == 12) {
-//                            reader.newInventoryStop();
-//                            Log.d("ZM", "盘停止盘点就去读卡阶段: " + epc);
-//                            ReadEPCThread readEPCThread = new ReadEPCThread(handler, reader, epc, mContext);
-//                            readEPCThread.start();
-//                        }
-//                    } catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-//        reader.newInventoryStart();
-//        Log.d("ZM", "readEPCStatus: end");
-//
-//    }
 
     public void longClickStatus(final Handler handler, boolean isLong) {
 
@@ -235,44 +197,6 @@ public class DeviceTools {
     }
 
 
-//    class InventoryThread extends Thread {
-//        private Handler handler;
-//
-//        public InventoryThread(Handler handler) {
-//            this.handler = handler;
-//        }
-//
-//        @Override
-//        public void run() {
-//            super.run();
-//            final IUHFService reader = getReader();
-//            reader.select_card(1, "", false);
-//            Log.d("ZM", "readEPCStatus: ");
-//            reader.setListener(new IUHFService.Listener() {
-//                @Override
-//                public void update(Tag_Data var1) {
-//                    final String epc = var1.epc;
-//                    Log.d("ZM", "盘点到数据: " + epc);
-//                    if (!TextUtils.isEmpty(epc)) {
-//                        try {
-//                            if (Tools.hexStringToString(epc).length() == 12) {
-//                                reader.newInventoryStop();
-//                                Log.d("ZM", "盘停止盘点就去读卡阶段: " + epc);
-//                                ReadEPCThread readEPCThread = new ReadEPCThread(handler, reader, epc, mContext);
-//                                readEPCThread.start();
-//                            }
-//                        } catch (UnsupportedEncodingException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            });
-//            reader.newInventoryStart();
-//            Log.d("ZM", "readEPCStatus: end");
-//        }
-//    }
-
-
     class LongClickThread extends Thread {
         private Handler handler;
         private boolean isLong;
@@ -288,7 +212,6 @@ public class DeviceTools {
             final IUHFService reader = getReader();
             int count = 0;
             while (!interrupted()) {
-//                SystemClock.sleep(400);
                 count++;
                 if (count > 5 && !isLong) {
                     Message msg = new Message();
@@ -302,20 +225,22 @@ public class DeviceTools {
                 }
                 reader.select_card(1, "", false);
                 Log.d("ZM", "readEPCStatus: ");
-//                SystemClock.sleep(200);
-//                String epc = reader.read_area(1, "2", "6", "00000000");
-                byte[] spdata = reader.read_area(1, 2, 6,
+                byte[] spdata = reader.read_area(1, 2, 8,
                         "00000000");
                 Log.d("ZM", "读到的EPC byte[]: " + spdata);
                 if (spdata != null) {
                     try {
                         String epc = Tools.Bytes2HexString(spdata, spdata.length);
-                        Log.d("ZM", "读到的EPC: " + epc);
-                        if (Tools.hexStringToString(epc).length() == 12) {
-                            Log.d("ZM", "符合的EPC: " + epc);
-                            readEPCStatus(reader, mContext, epc, handler, isLong);
+                        String substring = epc.substring(24);
+                        if (substring.equals("00000000")) {
+                            epc = epc.substring(0, 24);
                         }
-                    } catch (UnsupportedEncodingException e) {
+                        Log.d("ZM", "读到的EPC: " + epc);
+//                        if (Tools.hexStringToString(epc).length() == 12) {
+                        Log.d("ZM", "符合的EPC: " + epc);
+                        readEPCStatus(reader, mContext, epc, handler, isLong);
+//                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -368,26 +293,6 @@ public class DeviceTools {
     }
 
 
-//    class ReadEPCThread extends Thread {
-//        private Handler handler;
-//        private IUHFService reader;
-//        private String epc;
-//        private Context context;
-//
-//        public ReadEPCThread(Handler handler, IUHFService reader, String epc, Context context) {
-//            this.handler = handler;
-//            this.reader = reader;
-//            this.epc = epc;
-//            this.context = context;
-//        }
-//
-//        @Override
-//        public void run() {
-//            super.run();
-//            readEPCStatus(reader, context, epc, handler);
-//        }
-//    }
-
     /**
      * 读取EPC的状态(检测白蚁)
      * status = false 无
@@ -404,15 +309,9 @@ public class DeviceTools {
         try {
             while (count < 5) {
                 count++;
-//                SystemClock.sleep(200);
-//                Thread.sleep(20);
                 byte[] spdata = reader.read_area(1, 32, 1,
                         "00000000");
 
-//                if (TextUtils.isEmpty(area)) {
-//                    continue;
-//                }
-//                byte[] spdata = Tools.HexString2Bytes(area);
                 if (spdata == null) {
                     Log.d("ZM", "白蚁标记为=null");
                     continue;
@@ -460,7 +359,6 @@ public class DeviceTools {
                 longClickStop();
             }
         } catch (Exception e) {
-//            ShowToast.getInstance().show("读取EPC的状态异常", 0);
             Message msg = new Message();
             msg.arg1 = 0x2;
             handler.sendMessage(msg);
